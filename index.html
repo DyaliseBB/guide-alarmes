@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#1976d2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Alarmes NxStage">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Guide Alarmes NxStage</title>
+</head>
+<body>
+
+  <!-- VUE LISTE -->
+  <section id="vueListe" class="vue active">
+    <header class="topbar">
+      <div class="topbar-row">
+        <h1 data-i18n-fr="Guide Alarmes" data-i18n-en="Alarms Guide">Guide Alarmes</h1>
+        <button id="btnLangue" class="btn-lang">EN</button>
+      </div>
+      <p class="avert" data-i18n-fr="Document de courtoisie - usage personnel. Ne remplace pas le User Guide Fresenius/NxStage."
+                       data-i18n-en="Courtesy document - personal use. Does not replace the Fresenius/NxStage User Guide.">
+        Document de courtoisie - usage personnel. Ne remplace pas le User Guide Fresenius/NxStage.
+      </p>
+    </header>
+
+    <div class="filtres">
+      <input type="search" id="recherche" placeholder="Rechercher..." data-i18n-ph-fr="Rechercher..." data-i18n-ph-en="Search..." autocomplete="off">
+
+      <div class="chips" id="chipsType">
+        <button class="chip active" data-type="Tous" data-i18n-fr="Tous" data-i18n-en="All">Tous</button>
+        <button class="chip" data-type="CRITIQUE">CRITIQUE</button>
+        <button class="chip" data-type="ALARME">ALARME</button>
+        <button class="chip" data-type="Caution">Caution</button>
+        <button class="chip" data-type="Info">Info</button>
+      </div>
+
+      <div class="chips" id="chipsAppareil">
+        <button class="chip active" data-app="Tous" data-i18n-fr="Tous appareils" data-i18n-en="All devices">Tous appareils</button>
+      </div>
+    </div>
+
+    <div id="liste" class="liste"></div>
+
+    <div class="footer-info">
+      <span id="compteur"></span>
+      <button id="btnMenu" class="btn-menu" aria-label="Menu">⋮</button>
+    </div>
+
+    <button id="btnNouvelle" class="fab" aria-label="Nouvelle alarme">+</button>
+  </section>
+
+  <!-- VUE DETAIL -->
+  <section id="vueDetail" class="vue">
+    <header class="topbar topbar-detail">
+      <button class="btn-back" id="btnRetourDetail" aria-label="Retour">‹</button>
+      <h1 id="detailTitre"></h1>
+      <button class="btn-action" id="btnModifierDetail" data-i18n-fr="Modifier" data-i18n-en="Edit">Modifier</button>
+    </header>
+    <div id="detailContenu" class="detail-contenu"></div>
+  </section>
+
+  <!-- VUE EDIT -->
+  <section id="vueEdit" class="vue">
+    <header class="topbar topbar-detail">
+      <button class="btn-back" id="btnAnnulerEdit" aria-label="Annuler">×</button>
+      <h1 id="editTitre" data-i18n-fr="Modifier" data-i18n-en="Edit">Modifier</h1>
+      <button class="btn-action" id="btnEnregistrerEdit" data-i18n-fr="OK" data-i18n-en="OK">OK</button>
+    </header>
+    <div class="edit-form">
+      <div class="form-row">
+        <label data-i18n-fr="Numero" data-i18n-en="Number">Numero</label>
+        <input type="text" id="editNumero">
+      </div>
+      <div class="form-row form-row-two">
+        <div>
+          <label data-i18n-fr="Appareil" data-i18n-en="Device">Appareil</label>
+          <select id="editAppareil">
+            <option>Cycler</option>
+            <option>PureFlow SL</option>
+            <option>Express Fluid Warmer</option>
+          </select>
+        </div>
+        <div>
+          <label data-i18n-fr="Type" data-i18n-en="Type">Type</label>
+          <select id="editType">
+            <option>CRITIQUE</option>
+            <option>ALARME</option>
+            <option>Caution</option>
+            <option>Info</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label data-i18n-fr="Phase (optionnel)" data-i18n-en="Phase (optional)">Phase (optionnel)</label>
+        <input type="text" id="editPhase">
+      </div>
+      <div class="form-row">
+        <label>Titre FR</label>
+        <input type="text" id="editTitreFR">
+      </div>
+      <div class="form-row">
+        <label>Titre EN</label>
+        <input type="text" id="editTitreEN">
+      </div>
+      <div class="form-row">
+        <label data-i18n-fr="Action recommandee FR" data-i18n-en="Recommended action FR">Action recommandee FR</label>
+        <textarea id="editActionFR" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <label data-i18n-fr="Action recommandee EN" data-i18n-en="Recommended action EN">Action recommandee EN</label>
+        <textarea id="editActionEN" rows="3"></textarea>
+      </div>
+
+      <div class="form-section">
+        <div class="section-titre">
+          <h3 data-i18n-fr="Causes probables" data-i18n-en="Probable causes">Causes probables</h3>
+          <button class="btn-secondaire" id="btnAjouterCause" data-i18n-fr="+ Ajouter" data-i18n-en="+ Add">+ Ajouter</button>
+        </div>
+        <div id="editCauses" class="liste-causes"></div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-titre">
+          <h3 data-i18n-fr="Procedure FR" data-i18n-en="Procedure FR">Procedure FR</h3>
+          <button class="btn-secondaire" id="btnAjouterProcFR" data-i18n-fr="+ Etape" data-i18n-en="+ Step">+ Etape</button>
+        </div>
+        <ol id="editProcFR" class="liste-procedure"></ol>
+      </div>
+
+      <div class="form-section">
+        <div class="section-titre">
+          <h3 data-i18n-fr="Procedure EN" data-i18n-en="Procedure EN">Procedure EN</h3>
+          <button class="btn-secondaire" id="btnAjouterProcEN" data-i18n-fr="+ Etape" data-i18n-en="+ Step">+ Etape</button>
+        </div>
+        <ol id="editProcEN" class="liste-procedure"></ol>
+      </div>
+
+      <div class="form-actions-bas">
+        <button class="btn-danger" id="btnSupprimerEdit" data-i18n-fr="Supprimer cette alarme" data-i18n-en="Delete this alarm">Supprimer cette alarme</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU MODAL -->
+  <div id="menu" class="menu-overlay" hidden>
+    <div class="menu-content">
+      <button class="menu-item" id="menuReset" data-i18n-fr="Reinitialiser donnees Fresenius" data-i18n-en="Reset to Fresenius data">Reinitialiser donnees Fresenius</button>
+      <button class="menu-item" id="menuExport" data-i18n-fr="Exporter mes donnees (JSON)" data-i18n-en="Export my data (JSON)">Exporter mes donnees (JSON)</button>
+      <button class="menu-item" id="menuImport" data-i18n-fr="Importer un fichier JSON" data-i18n-en="Import JSON file">Importer un fichier JSON</button>
+      <button class="menu-item" id="menuApropos" data-i18n-fr="A propos" data-i18n-en="About">A propos</button>
+      <button class="menu-item menu-cancel" id="menuFermer" data-i18n-fr="Fermer" data-i18n-en="Close">Fermer</button>
+    </div>
+  </div>
+
+  <input type="file" id="fileImport" accept="application/json" hidden>
+
+  <!-- MODAL TEXTE (pour saisir une etape) -->
+  <div id="modalTexte" class="menu-overlay" hidden>
+    <div class="menu-content">
+      <h3 id="modalTexteTitre"></h3>
+      <textarea id="modalTexteSaisie" rows="4"></textarea>
+      <div class="modal-boutons">
+        <button class="menu-item menu-cancel" id="modalTexteAnnuler" data-i18n-fr="Annuler" data-i18n-en="Cancel">Annuler</button>
+        <button class="menu-item" id="modalTexteOK">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

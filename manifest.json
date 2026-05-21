@@ -1,0 +1,16 @@
+{
+  "name": "Guide Alarmes NxStage",
+  "short_name": "Alarmes NxStage",
+  "description": "Guide d'introduction aux codes de defaut du cycler NxStage System One (FR/EN). Document de courtoisie - usage personnel. NE REMPLACE PAS le User Guide officiel Fresenius/NxStage.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#1976d2",
+  "lang": "fr",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

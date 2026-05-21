@@ -1,0 +1,1008 @@
+{
+  "metadata": {
+    "sources": [
+      "Fresenius Medical Care - TM0763 EMEA Rev B (c) 2020 - Cycler Alarm and Caution List",
+      "Fresenius Medical Care - TM0848 EMEA Rev A (c) 2020 - Troubleshoot Alarms"
+    ],
+    "avertissementFR": "Ce guide est une traduction de courtoisie a usage strictement personnel. Il NE REMPLACE PAS le User Guide officiel Fresenius/NxStage, ni la formation NxSTEPS, ni les Instructions for Use de la cartouche. En cas d'alarme dont la resolution n'est pas evidente, NE PAS FORCER : appeler immediatement le support technique Fresenius Medical Care France.",
+    "avertissementEN": "This guide is a courtesy translation for strictly personal use. It DOES NOT REPLACE the official Fresenius/NxStage User Guide, NxSTEPS training, or the Cartridge Instructions for Use. If an alarm cannot be easily resolved, DO NOT force it: immediately call Fresenius Medical Care technical support.",
+    "version": "1.0.0",
+    "appareils": ["Cycler", "PureFlow SL", "Express Fluid Warmer"]
+  },
+  "typesAlarmes": [
+    { "code": "CRITIQUE", "couleurHex": "#8B0000", "libelleFR": "Arret immediat - appel support sans delai", "libelleEN": "Immediate stop - call support without delay" },
+    { "code": "ALARME",   "couleurHex": "#E53935", "libelleFR": "Arret du traitement - action requise avant reprise", "libelleEN": "Treatment stopped - action required before resuming" },
+    { "code": "Caution",  "couleurHex": "#FBC02D", "libelleFR": "Avertissement - verification ou action recommandee", "libelleEN": "Caution - verification or action recommended" },
+    { "code": "Info",     "couleurHex": "#1976D2", "libelleFR": "Information - etat normal ou sequence en cours", "libelleEN": "Information - normal state or sequence in progress" }
+  ],
+  "alarmes": [
+    {
+      "numero": "000",
+      "appareil": "Cycler",
+      "titreEN": "End of Treatment / Rinseback / Alarm Test passed",
+      "titreFR": "Fin de traitement / Restitution / Test d'alarme reussi",
+      "type": "Info",
+      "actionFR": "Etat normal de fin de seance ou test reussi au demarrage.",
+      "actionEN": "Normal end-of-session state or successful test at startup."
+    },
+    {
+      "numero": "1",
+      "appareil": "Cycler",
+      "titreEN": "Infusing Fluid Bolus",
+      "titreFR": "Injection d'un bolus de liquide",
+      "type": "Info",
+      "actionFR": "Le systeme injecte un bolus de dialysat ou de serum. Surveiller.",
+      "actionEN": "The system is injecting a bolus of dialysate or saline. Monitor."
+    },
+    {
+      "numero": "2",
+      "appareil": "Cycler",
+      "titreEN": "Fluid Balance System Check Underway",
+      "titreFR": "Verification du systeme de bilan hydrique en cours",
+      "type": "Info",
+      "actionFR": "Auto-controle interne. Attendre la fin (environ 2 minutes).",
+      "actionEN": "Automated internal check. Wait for completion (about 2 minutes)."
+    },
+    {
+      "numero": "3",
+      "appareil": "Cycler",
+      "titreEN": "Parameter Limit Exceeded",
+      "titreFR": "Limite de parametre depassee",
+      "type": "Caution",
+      "actionFR": "Un parametre programme est hors plage. Verifier les reglages.",
+      "actionEN": "A programmed setting is out of range. Check settings."
+    },
+    {
+      "numero": "4",
+      "appareil": "Cycler",
+      "titreEN": "Blood Pump Off",
+      "titreFR": "Pompe a sang arretee",
+      "type": "Caution",
+      "actionFR": "La pompe sang est arretee. Reprendre selon procedure.",
+      "actionEN": "The blood pump is stopped. Resume per procedure."
+    },
+    {
+      "numero": "5",
+      "appareil": "Cycler",
+      "titreEN": "Target Volume Achieved",
+      "titreFR": "Volume cible atteint",
+      "type": "Info",
+      "actionFR": "Le volume programme est atteint. Passer a la restitution.",
+      "actionEN": "Programmed volume reached. Proceed to rinseback."
+    },
+    {
+      "numero": "6",
+      "appareil": "Cycler",
+      "titreEN": "Blood Circulation Only",
+      "titreFR": "Circulation sanguine seule",
+      "type": "Info",
+      "actionFR": "Mode circulation sang sans dialyse. Verifier intention.",
+      "actionEN": "Blood circulation only, no dialysis. Verify intent."
+    },
+    {
+      "numero": "7",
+      "appareil": "Cycler",
+      "titreEN": "Alarms Overridden",
+      "titreFR": "Alarmes contournees",
+      "type": "Caution",
+      "actionFR": "Une ou plusieurs alarmes ont ete contournees. Verifier la securite.",
+      "actionEN": "One or more alarms have been overridden. Check safety."
+    },
+    {
+      "numero": "8",
+      "appareil": "Cycler",
+      "titreEN": "Pressure Limits Not Locked",
+      "titreFR": "Limites de pression non verrouillees",
+      "type": "Caution",
+      "actionFR": "Les limites de pression ne sont pas figees. Verrouiller avant traitement.",
+      "actionEN": "Pressure limits are not locked. Lock before treatment."
+    },
+    {
+      "numero": "9",
+      "appareil": "Cycler",
+      "titreEN": "Automated High Pressure Recovery",
+      "titreFR": "Recuperation automatique haute pression",
+      "type": "Info",
+      "actionFR": "Le systeme tente de revenir a une pression normale. Surveiller.",
+      "actionEN": "The system is attempting to recover normal pressure. Monitor."
+    },
+    {
+      "numero": "10",
+      "appareil": "Cycler",
+      "titreEN": "Check for Venous Air",
+      "titreFR": "Verifier presence d'air ligne veineuse",
+      "type": "ALARME",
+      "actionFR": "ARRET. Air detecte cote retour patient. NE PAS reprendre sans verification. Appeler support.",
+      "actionEN": "STOP. Air detected on patient return side. DO NOT resume without verification. Call support.",
+      "phase": "TREATMENT",
+      "causes": [
+        { "checkForEN": "Air that wasn't completely removed from venous header.", "checkForFR": "De l'air qui n'a pas ete totalement elimine du collecteur veineux.", "doEN": "Remove air from venous header.", "doFR": "Eliminer l'air du collecteur veineux." },
+        { "checkForEN": "Air in the blood circuit or in the patient bloodlines because they weren't snapped and tapped correctly.", "checkForFR": "De l'air dans le circuit sang ou les lignes patient parce que le 'snap and tap' n'a pas ete fait correctement.", "doEN": "Remove air from venous lines.", "doFR": "Eliminer l'air des lignes veineuses." },
+        { "checkForEN": "Loose arterial connections.", "checkForFR": "Raccordements arteriels desserres.", "doEN": "Tighten and secure connections.", "doFR": "Serrer et securiser les raccordements." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Appuyer sur STOP.",
+        "Fixer une seringue de 20 ml au port post-dialyseur (Post Dialyser Port), declamper le port et tirer lentement sur la seringue luer-lock pour evacuer l'air.",
+        "Tenir la seringue verticale pour faire remonter les bulles d'air, puis - si votre centre vous l'a indique - reinjecter le sang par le port post-dialyseur, puis re-clamper le port de facon securisee (reinjecter le sang, PAS l'air).",
+        "Appuyer sur TREATMENT ; une caution jaune n12 apparaitra.",
+        "Si de l'air est visible dans la ligne patient veineuse (clamp bleu), appuyer sur STOP et repeter les etapes 4 a 6. Si vous ne parvenez pas a evacuer l'air, appuyer sur STOP et TERMINER le traitement. NE PAS restituer le sang. Si aucun air n'est visible, appuyer sur TREATMENT pour relancer la pompe au debit programme.",
+        "Rincer le port post-dialyseur avec 3 ml de serum physiologique puis re-clamper le port de facon securisee.",
+        "Connecter une seringue propre de 20 ml."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Press STOP.",
+        "Attach a 20 ml syringe to the Post Dialyser Port, unclamp the port, and slowly pull back on the luer lock syringe to remove air.",
+        "Hold the syringe upright to allow the air bubbles to rise, and then if directed by your centre, push the blood back through the post dialyser port, and then clamp the port securely (the blood, but not the air should be injected back).",
+        "Press TREATMENT; you will see a Yellow Caution 12.",
+        "If air is seen in the Venous Patient Line (blue clamp), press STOP and repeat steps 4-6. If you are unable to remove air from the Venous Patient Line, press STOP and terminate TREATMENT. Do not rinse back blood. If no air is seen, press TREATMENT to return the blood pump to your programmed rate.",
+        "Flush the Post Dialyser Port with 3 mL of saline, and then clamp the port securely.",
+        "Connect a clean 20 ml syringe."
+      ]
+    },
+    {
+      "numero": "11",
+      "appareil": "Cycler",
+      "titreEN": "Check for Arterial Air",
+      "titreFR": "Verifier presence d'air ligne arterielle",
+      "type": "ALARME",
+      "actionFR": "ARRET. Air detecte cote prelevement. NE PAS reprendre sans verification. Appeler support.",
+      "actionEN": "STOP. Air detected on the draw side. DO NOT resume without verification. Call support.",
+      "phase": "TREATMENT",
+      "causes": [
+        { "checkForEN": "Poor flow through arterial access flow site.", "checkForFR": "Mauvais debit au site d'abord arteriel.", "doEN": "Re-establish or adjust access.", "doFR": "Retablir ou ajuster l'abord." },
+        { "checkForEN": "Change in needle position.", "checkForFR": "Changement de position de l'aiguille.", "doEN": "Reposition needle.", "doFR": "Repositionner l'aiguille." },
+        { "checkForEN": "Loose, disconnected, or clamped Arterial Patient Line.", "checkForFR": "Ligne patient arterielle desserree, debranchee ou clampee.", "doEN": "Secure, reconnect, or unclamp Arterial Patient Line.", "doFR": "Securiser, reconnecter ou declamper la ligne patient arterielle." },
+        { "checkForEN": "Air in Saline Line because the saline bag is empty.", "checkForFR": "Air dans la ligne de serum parce que la poche est vide.", "doEN": "Replace empty saline bag with a new bag.", "doFR": "Remplacer la poche de serum vide par une neuve." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Appuyer sur STOP.",
+        "Appuyer sur TREATMENT. Une caution 12 apparaitra. Continuer a surveiller la ligne patient arterielle (clamp rouge) pour detecter de l'air. La pompe a sang fonctionnera lentement pour permettre cette observation.",
+        "Fixer une seringue luer-lock de 20 ml au port post-dialyseur.",
+        "Appuyer sur TREATMENT. La pompe a sang reviendra au debit prescrit.",
+        "Si ou quand de l'air est visible dans le collecteur veineux, declamper le port et tirer lentement sur la seringue pour evacuer l'air.",
+        "Tenir la seringue verticale pour faire remonter les bulles d'air, puis reinjecter le sang par le port post-dialyseur (sang oui, air non), puis re-clamper le port.",
+        "Rincer le port post-dialyseur avec 3 ml de serum, puis re-clamper.",
+        "Ajouter une seringue propre de 20 ml."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Press STOP.",
+        "Press TREATMENT. You will see a caution 12. Continue to watch the Arterial Patient Line (red clamp) for air. The blood pump will run slowly to allow you to observe for air.",
+        "Attach a 20 ml luer lock syringe to the Post Dialyser Port.",
+        "Press TREATMENT. The blood pump will return to the prescribed blood flow rate.",
+        "If, or when, air is seen in the venous header, unclamp the port and slowly pull back on the syringe to remove air.",
+        "Hold the syringe upright to allow the air bubbles to rise, and then inject the blood back through the Post Dialyser Port (the blood, but not the air should be injected back), and then clamp the port securely.",
+        "Flush the Post Dialyser Port with 3 mL of saline, and then clamp the port securely.",
+        "Add clean 20 ml syringe."
+      ]
+    },
+    {
+      "numero": "12",
+      "appareil": "Cycler",
+      "titreEN": "Air Recovery Underway",
+      "titreFR": "Recuperation d'air en cours",
+      "type": "Info",
+      "actionFR": "Le systeme evacue l'air. Attendre la fin de la sequence.",
+      "actionEN": "The system is removing air. Wait for the sequence to complete."
+    },
+    {
+      "numero": "13",
+      "appareil": "Cycler",
+      "titreEN": "Check Fluid Line Inlet: Air detected in Fluid Line Inlet",
+      "titreFR": "Verifier entree ligne fluide : air detecte en entree ligne fluide",
+      "type": "Caution",
+      "actionFR": "Verifier raccordement de la ligne d'entree dialysat. Purger si besoin.",
+      "actionEN": "Check dialysate inlet line connection. Prime if needed."
+    },
+    {
+      "numero": "14",
+      "appareil": "Cycler",
+      "titreEN": "Check Fluid Line Inlet: Air Detected in Fluid Line Inlet",
+      "titreFR": "Verifier entree ligne fluide : air detecte en entree ligne fluide",
+      "type": "Caution",
+      "actionFR": "Idem 13 - autre niveau de detection. Verifier ligne et poche.",
+      "actionEN": "Same as 13 - other detection level. Check line and bag.",
+      "causes": [
+        { "checkForEN": "Dialysate source fluid volume low or empty.", "checkForFR": "Volume de la source de dialysat bas ou vide.", "doEN": "Add more dialysate.", "doFR": "Ajouter du dialysat." },
+        { "checkForEN": "Blocked, kinked, or clamped Dialysate line(s).", "checkForFR": "Ligne(s) de dialysat bloquee(s), pliee(s) ou clampee(s).", "doEN": "Unkink or unclamp line(s).", "doFR": "Deplier ou declamper la (les) ligne(s)." },
+        { "checkForEN": "Loose Dialysate line connections.", "checkForFR": "Raccordements de ligne dialysat desserres.", "doEN": "Tighten or secure connections.", "doFR": "Serrer ou securiser les raccordements." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Appuyer sur TREATMENT.",
+        "Si cette alarme se repete, reduire le debit sang : l'abord arteriel ne peut peut-etre pas delivrer le debit defini."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Press TREATMENT.",
+        "If this alarm repeats, reduce blood flow: the arterial access may not be able to deliver the set flow."
+      ]
+    },
+    {
+      "numero": "20",
+      "appareil": "Cycler",
+      "titreEN": "Check Blood Circuit: Venous Pressure Low",
+      "titreFR": "Verifier circuit sang : pression veineuse basse",
+      "type": "ALARME",
+      "actionFR": "Pression de retour trop basse. Verifier ligne veineuse, debranchement aiguille, raccords.",
+      "actionEN": "Return pressure too low. Check venous line, needle dislodgement, connections.",
+      "causes": [
+        { "checkForEN": "Blood flow rate is lower than prescribed rate.", "checkForFR": "Debit sang inferieur au debit prescrit.", "doEN": "Increase blood pump rate.", "doFR": "Augmenter le debit de la pompe a sang." },
+        { "checkForEN": "Dislodged venous needle.", "checkForFR": "Aiguille veineuse delogee.", "doEN": "Secure Venous Patient Line or access.", "doFR": "Securiser la ligne patient veineuse ou l'abord." },
+        { "checkForEN": "After delivering a Manual Fluid Bolus.", "checkForFR": "Apres avoir delivre un bolus manuel de fluide.", "doEN": "Resume prescribed blood flow.", "doFR": "Reprendre le debit sang prescrit." },
+        { "checkForEN": "Disconnected Venous Patient Line.", "checkForFR": "Ligne patient veineuse debranchee.", "doEN": "Reconnect Venous Patient Line.", "doFR": "Reconnecter la ligne patient veineuse." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Appuyer sur STOP.",
+        "Appuyer sur TREATMENT.",
+        "Rappel : une alarme 20 peut survenir apres un bolus manuel de fluide. Si c'est la cause, reprendre simplement le debit sang prescrit."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Press STOP.",
+        "Press TREATMENT.",
+        "Note: alarm 20 may occur after a manual fluid bolus. If so, simply resume the prescribed blood flow."
+      ]
+    },
+    {
+      "numero": "21",
+      "appareil": "Cycler",
+      "titreEN": "Check Blood Circuit: Venous Pressure Decreasing",
+      "titreFR": "Verifier circuit sang : pression veineuse en baisse",
+      "type": "Caution",
+      "actionFR": "Tendance a la baisse - controle precoce. Verifier abord et lignes.",
+      "actionEN": "Decreasing trend - early check. Verify access and lines."
+    },
+    {
+      "numero": "22",
+      "appareil": "Cycler",
+      "titreEN": "Check Blood Circuit: Effluent Pressure Low",
+      "titreFR": "Verifier circuit sang : pression effluent basse",
+      "type": "ALARME",
+      "actionFR": "Pression effluent trop basse. Verifier ligne effluent et dialyseur.",
+      "actionEN": "Effluent pressure too low. Check effluent line and dialyzer."
+    },
+    {
+      "numero": "23",
+      "appareil": "Cycler",
+      "titreEN": "Check Blood Circuit: Effluent Pressure Decreasing",
+      "titreFR": "Verifier circuit sang : pression effluent en baisse",
+      "type": "Caution",
+      "actionFR": "Tendance a la baisse de l'effluent. Surveiller.",
+      "actionEN": "Decreasing trend on effluent. Monitor."
+    },
+    {
+      "numero": "24",
+      "appareil": "Cycler",
+      "titreEN": "Check Arterial Access: Access Pressure Decreasing / at Low Limit",
+      "titreFR": "Verifier abord arteriel : pression d'abord decroissante / a la limite basse",
+      "type": "ALARME",
+      "actionFR": "Probleme d'aspiration cote prelevement. Verifier aiguille arterielle, plicature, garrot.",
+      "actionEN": "Suction problem on draw side. Check arterial needle, kink, tourniquet.",
+      "causes": [
+        { "checkForEN": "Arterial access flow problem.", "checkForFR": "Probleme de debit a l'abord arteriel.", "doEN": "Reposition access, adjust needle, or reduce blood flow.", "doFR": "Repositionner l'abord, ajuster l'aiguille, ou reduire le debit sang." },
+        { "checkForEN": "Arterial Patient Line kinked or clamped.", "checkForFR": "Ligne patient arterielle pliee ou clampee.", "doEN": "Unkink or unclamp line.", "doFR": "Deplier ou declamper la ligne." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Appuyer sur STOP.",
+        "Appuyer sur TREATMENT.",
+        "Surveiller les pressions : signaler a l'infirmiere de votre centre toute pression arterielle ou veineuse anormale, afin d'agir sur les problemes d'abord et de prevenir les alarmes."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Press STOP.",
+        "Press TREATMENT.",
+        "Monitor pressures: report any abnormal arterial or venous pressure to your center's nurse, to address access issues and prevent alarms."
+      ]
+    },
+    {
+      "numero": "25",
+      "appareil": "Cycler",
+      "titreEN": "Access Pressure Pod Error: Reset Access Pressure Pod",
+      "titreFR": "Erreur du capteur de pression d'abord : reinitialiser le pod",
+      "type": "Caution",
+      "actionFR": "Repositionner le pod de pression d'abord selon la procedure.",
+      "actionEN": "Reposition the Access Pressure Pod following procedure.",
+      "causes": [
+        { "checkForEN": "Disconnected or poorly connected Access Pressure Pod monitoring line.", "checkForFR": "Ligne de surveillance du pod de pression d'abord debranchee ou mal connectee.", "doEN": "Follow steps 3-9 to reset the Access Pressure Pod.", "doFR": "Suivre les etapes 3 a 9 pour reinitialiser le pod." },
+        { "checkForEN": "Access Pressure Pod monitoring line kinked.", "checkForFR": "Ligne de surveillance du pod pliee.", "doEN": "Unkink Access Pressure Pod monitoring line.", "doFR": "Deplier la ligne de surveillance du pod." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Detacher la ligne de surveillance du pod du cycler (le pod se degonflera).",
+        "Appuyer sur STOP. Si le pod se remplit immediatement, passer a l'etape 8. Sinon, aller a l'etape 5.",
+        "Clamper la ligne patient arterielle (clamp rouge).",
+        "Declamper la ligne de serum et le 'Saline T' (clamps blancs). Quand la membrane du pod se remplit de sang, re-clamper les clamps blancs.",
+        "Declamper la ligne patient arterielle (clamp rouge).",
+        "Fixer la ligne de surveillance du pod au cycler.",
+        "Appuyer sur TREATMENT.",
+        "Verifier que les pressions arterielles sont dans la plage acceptable."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Detach the Access Pressure Pod monitoring line from the Cycler (the Pod will deflate).",
+        "Press STOP. If Pod fills immediately, skip to step 8. If Pod does not fill immediately, go to step 5.",
+        "Clamp the Arterial Patient Line (red clamp).",
+        "Unclamp the Saline Line and Saline T (white clamps). When the Pod diaphragm fills with blood, clamp the white clamps.",
+        "Unclamp the Arterial Patient Line (red clamp).",
+        "Attach the Access Pressure Pod monitoring line to the Cycler.",
+        "Press TREATMENT.",
+        "Confirm that arterial pressures are within range."
+      ]
+    },
+    {
+      "numero": "30",
+      "appareil": "Cycler",
+      "titreEN": "Check Blood Circuit: Venous Pressure High / Approaching High Limit",
+      "titreFR": "Verifier circuit sang : pression veineuse haute / approche limite haute",
+      "type": "ALARME",
+      "actionFR": "Pression retour trop haute. Verifier plicature ligne veineuse, aiguille, coagulation.",
+      "actionEN": "Return pressure too high. Check venous line kink, needle, clotting.",
+      "phase": "TREATMENT",
+      "causes": [
+        { "checkForEN": "Blood flow rate too high.", "checkForFR": "Debit sang trop eleve.", "doEN": "Decrease the blood flow rate.", "doFR": "Reduire le debit sang." },
+        { "checkForEN": "Venous Patient Line kinked or clamped.", "checkForFR": "Ligne patient veineuse pliee ou clampee.", "doEN": "Unkink or unclamp the line.", "doFR": "Deplier ou declamper la ligne." },
+        { "checkForEN": "Venous access infiltrate.", "checkForFR": "Infiltration au site veineux.", "doEN": "Correct the venous access infiltration.", "doFR": "Corriger l'infiltration au site veineux." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Appuyer sur STOP.",
+        "Appuyer sur TREATMENT."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Press STOP.",
+        "Press TREATMENT."
+      ]
+    },
+    {
+      "numero": "32",
+      "appareil": "Cycler",
+      "titreEN": "Check Blood Circuit: Venous Pressure Increasing",
+      "titreFR": "Verifier circuit sang : pression veineuse en hausse",
+      "type": "Caution",
+      "actionFR": "Tendance haussiere - precoce. Verifier coagulation eventuelle.",
+      "actionEN": "Increasing trend - early. Check for possible clotting."
+    },
+    {
+      "numero": "33+34",
+      "appareil": "Cycler",
+      "titreEN": "Check Dialyser: High Trans Membrane Pressure (TMP)",
+      "titreFR": "Verifier dialyseur : pression transmembranaire elevee (PTM)",
+      "type": "ALARME",
+      "actionFR": "PTM trop haute - colmatage probable du dialyseur. Voir procedure.",
+      "actionEN": "TMP too high - probable dialyzer clotting. See procedure."
+    },
+    {
+      "numero": "35",
+      "appareil": "Cycler",
+      "titreEN": "Check Waste Line: Waste Line Pressure High",
+      "titreFR": "Verifier ligne d'effluent : pression haute",
+      "type": "ALARME",
+      "actionFR": "Ligne dechets obstruee ou plissee. Verifier evacuation.",
+      "actionEN": "Waste line obstructed or kinked. Check drainage.",
+      "causes": [
+        { "checkForEN": "Waste or Drain Line kinked, clamped, pinched, blocked, submerged, or not connected.", "checkForFR": "Ligne dechets ou drain pliee, clampee, pincee, bloquee, immergee ou non connectee.", "doEN": "Unkink, unclamp, or correct lines to ensure waste fluid is flowing freely.", "doFR": "Deplier, declamper ou corriger les lignes pour assurer un ecoulement libre." },
+        { "checkForEN": "Clogged PureFlow SL Drain Line.", "checkForFR": "Ligne de drain PureFlow SL bouchee.", "doEN": "Switch to disposable Waste line extension.", "doFR": "Passer a l'extension de ligne d'effluent jetable." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Appuyer sur STOP sur le cycler.",
+        "Appuyer sur TREATMENT."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Press STOP on the cycler.",
+        "Press TREATMENT."
+      ]
+    },
+    {
+      "numero": "36",
+      "appareil": "Cycler",
+      "titreEN": "Check Dialysate Source: Dialysate Inlet Pressure Exceeded",
+      "titreFR": "Verifier source dialysat : pression entree dialysat depassee",
+      "type": "ALARME",
+      "actionFR": "Pression entree dialysat trop haute. Verifier poche/PureFlow et lignes.",
+      "actionEN": "Dialysate inlet pressure too high. Check bag/PureFlow and lines."
+    },
+    {
+      "numero": "37/38/39",
+      "appareil": "Cycler",
+      "titreEN": "Check Fluid Circuit: High Balance Chamber Pressure",
+      "titreFR": "Verifier circuit fluide : pression elevee chambre de bilan",
+      "type": "ALARME",
+      "actionFR": "Probleme de bilan hydrique. NE PAS forcer - appeler support.",
+      "actionEN": "Fluid balance problem. DO NOT force - call support.",
+      "phase": "TREATMENT",
+      "causes": [
+        { "checkForEN": "Blocked, kinked, clamped fluid line(s) (Dialysate or Waste Lines).", "checkForFR": "Ligne(s) fluide bloquee(s), pliee(s) ou clampee(s) (dialysat ou dechets).", "doEN": "Unkink, unclamp, or clear lines.", "doFR": "Deplier, declamper ou degager les lignes." },
+        { "checkForEN": "Empty or low dialysate source.", "checkForFR": "Source de dialysat vide ou faible.", "doEN": "Add more dialysate.", "doFR": "Ajouter du dialysat." },
+        { "checkForEN": "If using PureFlow SL, TREATMENT was pressed on the cycler before GO was pressed on the PureFlow SL.", "checkForFR": "Si vous utilisez le PureFlow SL : TREATMENT a ete appuye sur le cycler avant que GO ne soit appuye sur le PureFlow SL.", "doEN": "Verify PureFlow SL is in 'Batch in Use'. If not, press GO twice on the PureFlow SL. Then press TREATMENT on the Cycler.", "doFR": "Verifier que le PureFlow SL est en mode 'Batch in Use'. Sinon, appuyer deux fois sur GO sur le PureFlow SL, puis appuyer sur TREATMENT sur le cycler." },
+        { "checkForEN": "If using PureFlow SL, check for insufficient volume in the SAK.", "checkForFR": "Si vous utilisez le PureFlow SL : verifier qu'il n'y a pas un volume insuffisant dans le SAK.", "doEN": "Terminate TREATMENT, rinse back blood, and then call your dialysis center for instructions.", "doFR": "Terminer le traitement, faire la restitution, puis appeler votre centre de dialyse pour instructions." },
+        { "checkForEN": "Clogged PureFlow SL Drain Line.", "checkForFR": "Ligne de drain PureFlow SL bouchee.", "doEN": "Switch to disposable Waste Line Extension.", "doFR": "Passer a l'extension de ligne d'effluent jetable." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE pour couper le son.",
+        "Identifier et corriger la ou les causes probables.",
+        "Appuyer sur STOP sur le cycler. Un 9 apparaitra dans la fenetre jaune. NE PAS appuyer a nouveau sur STOP.",
+        "Appuyer sur TREATMENT. Le traitement reprendra automatiquement quand le 9 disparaitra.",
+        "Note : cette procedure est specifique au logiciel 4.13 et superieur. Si une alarme ne peut etre resolue apres plusieurs tentatives, effectuer l'une des actions suivantes.",
+        "Pour les alarmes de chambre de bilan (alarmes rouges 35, 37, 38, 39) : appuyer et maintenir STOP. La pompe a sang commence a tourner au debit de traitement.",
+        "Si la cause ne peut etre resolue : appuyer sur STOP pour terminer le traitement et lancer la restitution.",
+        "Quand la cause est resolue, appuyer sur TREATMENT pour reprendre.",
+        "Pour toutes les autres alarmes : ajouter du dialysat si necessaire."
+      ],
+      "procedureEN": [
+        "Press MUTE to silence the alarm.",
+        "Identify and fix the probable cause(s).",
+        "Press STOP on the Cycler. You will see a 9 in the Yellow Caution window. Do not press STOP again.",
+        "Press TREATMENT. TREATMENT will automatically resume when the 9 disappears.",
+        "Note: this procedure is specific to software 4.13 and higher. If an alarm cannot be resolved after several attempts, perform one of the following actions.",
+        "For balance chamber alarms (red alarms 35, 37, 38, 39): press and hold STOP. The blood pump begins to run at treatment rate.",
+        "If the cause cannot be resolved: press STOP to terminate treatment and start rinseback.",
+        "Once the cause is resolved, press TREATMENT to resume.",
+        "For all other alarms: add dialysate if necessary."
+      ]
+    },
+    {
+      "numero": "40",
+      "appareil": "Cycler",
+      "titreEN": "Perform Power Recovery: Power Failure",
+      "titreFR": "Effectuer recuperation apres coupure : panne d'alimentation",
+      "type": "ALARME",
+      "actionFR": "Coupure secteur. Suivre procedure de Power Recovery. Onduleur recommande.",
+      "actionEN": "Power failure. Follow Power Recovery procedure. UPS recommended."
+    },
+    {
+      "numero": "41",
+      "appareil": "Cycler",
+      "titreEN": "Failed Power Recovery",
+      "titreFR": "Echec de la recuperation apres coupure",
+      "type": "ALARME",
+      "actionFR": "La recuperation n'a pas reussi. NE PAS forcer - appeler support.",
+      "actionEN": "Recovery failed. DO NOT force - call support.",
+      "procedureFR": [
+        "Appuyer sur MUTE.",
+        "Identifier et corriger la cause - quelle qu'elle soit, le traitement doit etre termine.",
+        "Recommandation pratique : installer un onduleur (UPS) dimensionne pour le cycler + l'Express Warmer au poste de dialyse a domicile. Cela permet d'absorber les microcoupures secteur et evite les recuperations echouees."
+      ],
+      "procedureEN": [
+        "Press MUTE.",
+        "Identify and fix the cause - whatever it is, treatment must be ended.",
+        "Practical recommendation: install a UPS sized for the cycler + Express Warmer at the home dialysis station. This absorbs power micro-outages and avoids failed recoveries."
+      ]
+    },
+    {
+      "numero": "50",
+      "appareil": "Cycler",
+      "titreEN": "Check Fluid Temp: Fluid Temp High",
+      "titreFR": "Verifier temperature fluide : temperature fluide haute",
+      "type": "ALARME",
+      "actionFR": "Dialysat trop chaud. Verifier rechauffeur Express Warmer. NE PAS connecter patient.",
+      "actionEN": "Dialysate too hot. Check Express Warmer. DO NOT connect patient.",
+      "causes": [
+        { "checkForEN": "Warmer/heater setting too high.", "checkForFR": "Reglage du rechauffeur trop eleve.", "doEN": "Reduce heater setting.", "doFR": "Reduire le reglage du rechauffeur." },
+        { "checkForEN": "Dialysate bags too warm prior to set-up.", "checkForFR": "Poches de dialysat trop chaudes avant l'installation.", "doEN": "Cool or replace dialysate bags.", "doFR": "Refroidir ou remplacer les poches de dialysat." },
+        { "checkForEN": "Treatment environment too warm.", "checkForFR": "Environnement de traitement trop chaud.", "doEN": "Cool room.", "doFR": "Rafraichir la piece." }
+      ],
+      "procedureFR": [
+        "Appuyer sur MUTE.",
+        "Identifier et resoudre la (les) cause(s) probable(s) en utilisant le User Guide du NxStage System One.",
+        "Appuyer sur STOP sur le cycler une fois la cause probable resolue.",
+        "Appuyer sur TREATMENT."
+      ],
+      "procedureEN": [
+        "Press MUTE.",
+        "Identify and resolve the probable cause(s) using the NxStage System One User Guide.",
+        "Press STOP on the Cycler when the probable cause has been resolved.",
+        "Press TREATMENT."
+      ]
+    },
+    {
+      "numero": "51",
+      "appareil": "Cycler",
+      "titreEN": "Fluid Cooldown underway",
+      "titreFR": "Refroidissement du fluide en cours",
+      "type": "Info",
+      "actionFR": "Le systeme refroidit le dialysat. Attendre.",
+      "actionEN": "System is cooling dialysate. Wait."
+    },
+    {
+      "numero": "52",
+      "appareil": "Cycler",
+      "titreEN": "Continue Treatment: Fluid Cooldown Complete",
+      "titreFR": "Continuer traitement : refroidissement termine",
+      "type": "Info",
+      "actionFR": "Temperature redevenue acceptable. Reprendre.",
+      "actionEN": "Temperature back in range. Resume."
+    },
+    {
+      "numero": "53",
+      "appareil": "Cycler",
+      "titreEN": "Low Fluid Temperature",
+      "titreFR": "Temperature fluide basse",
+      "type": "Caution",
+      "actionFR": "Dialysat trop froid. Verifier rechauffeur.",
+      "actionEN": "Dialysate too cold. Check warmer."
+    },
+    {
+      "numero": "54",
+      "appareil": "Cycler",
+      "titreEN": "Low Temperature Monitor Disabled",
+      "titreFR": "Surveillance basse temperature desactivee",
+      "type": "Caution",
+      "actionFR": "La surveillance basse temp. est desactivee. Voir prescription.",
+      "actionEN": "Low-temp monitoring disabled. Refer to prescription."
+    },
+    {
+      "numero": "60",
+      "appareil": "Cycler",
+      "titreEN": "Check for Blood Leak: Blood detected in waste Line",
+      "titreFR": "Verifier fuite de sang : sang detecte dans ligne dechets",
+      "type": "ALARME",
+      "actionFR": "ARRET IMMEDIAT. Sang dans ligne effluent - rupture membrane probable. NE PAS reprendre. Appeler support et centre.",
+      "actionEN": "IMMEDIATE STOP. Blood in effluent line - probable membrane rupture. DO NOT resume. Call support and center.",
+      "procedureFR": [
+        "Appuyer sur MUTE.",
+        "Identifier et resoudre la (les) cause(s) probable(s) en utilisant le User Guide du NxStage System One.",
+        "Suivre les instructions de votre hopital/centre pour tester la presence de sang dans l'effluent.",
+        "Procedure type : retirer un echantillon de la ligne d'effluent, tester avec bandelette si fournie par le centre, comparer a la reference.",
+        "En cas de confirmation : terminer le traitement, NE PAS restituer le sang, appeler le centre et le support technique."
+      ],
+      "procedureEN": [
+        "Press MUTE.",
+        "Identify and resolve the probable cause(s) using the NxStage System One User Guide.",
+        "Follow your Hospital instructions for testing waste fluid for the presence of blood.",
+        "Typical procedure: remove a sample from the effluent line, test with strip if provided by your center, compare to reference.",
+        "If confirmed: terminate treatment, DO NOT rinse back blood, call center and technical support."
+      ]
+    },
+    {
+      "numero": "61",
+      "appareil": "Cycler",
+      "titreEN": "Check BLD: Failed Blood Leak Detector",
+      "titreFR": "Verifier BLD : detecteur de fuite de sang en panne",
+      "type": "ALARME",
+      "actionFR": "Detecteur de fuite defaillant. NE PAS forcer - appeler support.",
+      "actionEN": "Faulty leak detector. DO NOT force - call support."
+    },
+    {
+      "numero": "62",
+      "appareil": "Cycler",
+      "titreEN": "Check Dialyser for Clotting",
+      "titreFR": "Verifier coagulation du dialyseur",
+      "type": "ALARME",
+      "actionFR": "Coagulation du dialyseur. Verifier anticoagulation prescrite.",
+      "actionEN": "Dialyzer clotting. Check prescribed anticoagulation."
+    },
+    {
+      "numero": "70",
+      "appareil": "Cycler",
+      "titreEN": "Change Cartridge: Cartridge Life Exceeded",
+      "titreFR": "Changer cartouche : duree de vie cartouche depassee",
+      "type": "Caution",
+      "actionFR": "Cartouche en fin de vie. Remplacer selon procedure.",
+      "actionEN": "Cartridge end of life. Replace per procedure."
+    },
+    {
+      "numero": "71",
+      "appareil": "Cycler",
+      "titreEN": "Schedule Preventative Maintenance Due",
+      "titreFR": "Maintenance preventive a programmer",
+      "type": "Caution",
+      "actionFR": "Maintenance constructeur requise. MUTE pour continuer la seance, mais contacter NxStage pour remplacement. Note : l'alarme se redeclenchera a chaque mise sous tension jusqu'au remplacement.",
+      "actionEN": "Manufacturer maintenance required. MUTE to continue session, but contact NxStage for replacement. Note: alarm will trigger at each power-on until replacement."
+    },
+    {
+      "numero": "72",
+      "appareil": "Cycler",
+      "titreEN": "Treatment Complete",
+      "titreFR": "Traitement termine",
+      "type": "Info",
+      "actionFR": "Fin normale de seance. Passer en restitution.",
+      "actionEN": "Normal end of session. Switch to rinseback."
+    },
+    {
+      "numero": "80",
+      "appareil": "Cycler",
+      "titreEN": "Reconfigure Cartridge Line",
+      "titreFR": "Reconfigurer la ligne de cartouche",
+      "type": "Caution",
+      "actionFR": "Verifier installation lignes selon le guide.",
+      "actionEN": "Check line setup per guide."
+    },
+    {
+      "numero": "81",
+      "appareil": "Cycler",
+      "titreEN": "Tap Dialyser to Remove Air (Optional)",
+      "titreFR": "Tapoter le dialyseur pour evacuer l'air (optionnel)",
+      "type": "Info",
+      "actionFR": "Geste manuel d'aide a la purge.",
+      "actionEN": "Manual gesture to help priming."
+    },
+    {
+      "numero": "85",
+      "appareil": "Cycler",
+      "titreEN": "Check Cartridge Loading: Waste Line Check Failure",
+      "titreFR": "Verifier mise en place cartouche : echec test ligne dechets",
+      "type": "ALARME",
+      "actionFR": "Test ligne dechets echoue. Reverifier le chargement cartouche.",
+      "actionEN": "Waste line test failed. Recheck cartridge loading."
+    },
+    {
+      "numero": "86",
+      "appareil": "Cycler",
+      "titreEN": "Reprime (Replace) Cartridge: Failed Alarm Test",
+      "titreFR": "Re-amorcer (remplacer) cartouche : echec test alarmes",
+      "type": "ALARME",
+      "actionFR": "Test alarmes echoue. Recommencer l'amorcage. Si persistant, changer cartouche.",
+      "actionEN": "Alarm test failed. Restart priming. If persistent, change cartridge."
+    },
+    {
+      "numero": "87",
+      "appareil": "Cycler",
+      "titreEN": "Check Cartridge Loading: UF Occlusion Test Failure",
+      "titreFR": "Verifier mise en place cartouche : echec test occlusion UF",
+      "type": "ALARME",
+      "actionFR": "Test ultrafiltration echoue. Reverifier le chargement.",
+      "actionEN": "Ultrafiltration test failed. Recheck loading."
+    },
+    {
+      "numero": "88",
+      "appareil": "Cycler",
+      "titreEN": "Pressure offset Rezeroing Needed",
+      "titreFR": "Remise a zero des offsets de pression necessaire",
+      "type": "Caution",
+      "actionFR": "Lancer la procedure de rezeroing pression.",
+      "actionEN": "Start pressure rezeroing procedure."
+    },
+    {
+      "numero": "89",
+      "appareil": "Cycler",
+      "titreEN": "Pressure offset Rezeroing Failed",
+      "titreFR": "Echec remise a zero des offsets de pression",
+      "type": "ALARME",
+      "actionFR": "Rezeroing impossible. NE PAS forcer - appeler support.",
+      "actionEN": "Rezeroing failed. DO NOT force - call support."
+    },
+    {
+      "numero": "90",
+      "appareil": "Cycler",
+      "titreEN": "Check Cartridge For Leak: Fluid Circuit Test Failure",
+      "titreFR": "Verifier fuite cartouche : echec test circuit fluide",
+      "type": "ALARME",
+      "actionFR": "Fuite suspectee. Verifier cartouche - remplacer si confirme.",
+      "actionEN": "Leak suspected. Check cartridge - replace if confirmed."
+    },
+    {
+      "numero": "91",
+      "appareil": "Cycler",
+      "titreEN": "Check Fluid Balance: Fluid Circuit Leak Probable",
+      "titreFR": "Verifier bilan fluide : fuite circuit fluide probable",
+      "type": "ALARME",
+      "actionFR": "Fuite probable - NE PAS reprendre sans verification.",
+      "actionEN": "Probable leak - DO NOT resume without verification."
+    },
+    {
+      "numero": "92",
+      "appareil": "Cycler",
+      "titreEN": "Check For Cartridge Leak",
+      "titreFR": "Verifier fuite cartouche",
+      "type": "ALARME",
+      "actionFR": "Inspection visuelle cartouche - remplacer si fuite.",
+      "actionEN": "Visual cartridge inspection - replace if leak."
+    },
+    {
+      "numero": "93",
+      "appareil": "Cycler",
+      "titreEN": "Correct Parameters: System Setting Conflict",
+      "titreFR": "Corriger parametres : conflit de reglages systeme",
+      "type": "Caution",
+      "actionFR": "Reglages incompatibles. Reverifier la prescription saisie.",
+      "actionEN": "Incompatible settings. Recheck entered prescription."
+    },
+    {
+      "numero": "99",
+      "appareil": "Cycler",
+      "titreEN": "Fluid Balance System Failed: Terminate Treatment",
+      "titreFR": "Echec systeme de bilan hydrique : terminer le traitement",
+      "type": "CRITIQUE",
+      "actionFR": "ARRET IMMEDIAT du traitement. Passer en restitution. Appeler support sans delai.",
+      "actionEN": "IMMEDIATE STOP. Switch to rinseback. Call support without delay."
+    },
+    {
+      "numero": "100-999",
+      "appareil": "Cycler",
+      "titreEN": "System Alarm: See User Guide",
+      "titreFR": "Alarme systeme : voir le guide utilisateur",
+      "type": "ALARME",
+      "actionFR": "Alarme systeme - se reporter au User Guide officiel ET appeler le support technique.",
+      "actionEN": "System alarm - refer to official User Guide AND call technical support."
+    },
+    {
+      "numero": "12",
+      "appareil": "PureFlow SL",
+      "titreEN": "PAK Exhausted, PAK is Exhausted and Cannot Be Used",
+      "titreFR": "PAK epuise : le PAK est epuise et ne peut pas etre utilise",
+      "type": "ALARME",
+      "actionFR": "PAK epuise - le remplacer.",
+      "actionEN": "PAK exhausted - replace it.",
+      "phase": "PAK PRIME",
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Appuyer sur GO.",
+        "Installer et amorcer un nouveau PAK."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Press GO.",
+        "Install and prime new PAK."
+      ]
+    },
+    {
+      "numero": "50",
+      "appareil": "PureFlow SL",
+      "titreEN": "Inlet Pressure Low",
+      "titreFR": "Pression d'entree basse",
+      "type": "ALARME",
+      "actionFR": "Pression d'eau source basse. Verifier raccordement et ouverture de l'eau.",
+      "actionEN": "Source water pressure low. Check connection and water supply.",
+      "phase": "PAK PRIME",
+      "causes": [
+        { "checkForEN": "Low source water pressure or water not turned on.", "checkForFR": "Pression d'eau source basse ou eau non ouverte.", "doEN": "Verify PureFlow SL is correctly connected to water source. Make sure water is turned on.", "doFR": "Verifier que le PureFlow SL est correctement raccorde a la source d'eau. S'assurer que l'eau est ouverte." },
+        { "checkForEN": "Kinked or not properly connected Water Inlet Line (blue line from source water to PureFlow SL).", "checkForFR": "Ligne d'entree d'eau pliee ou mal raccordee (ligne bleue de l'eau source au PureFlow SL).", "doEN": "Unkink or connect line.", "doFR": "Deplier ou raccorder la ligne." }
+      ],
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Identifier et corriger la (les) cause(s) probable(s).",
+        "Appuyer sur GO.",
+        "Si le probleme persiste, contacter le service client local pour commander un filtre sediment de remplacement."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Identify and fix the probable cause(s).",
+        "Press GO.",
+        "If the problem continues, call your local Customer Service to order a replacement sediment filter."
+      ]
+    },
+    {
+      "numero": "51",
+      "appareil": "PureFlow SL",
+      "titreEN": "Output Pressure High",
+      "titreFR": "Pression de sortie elevee",
+      "type": "ALARME",
+      "actionFR": "Verifier les lignes (plicatures, clamps, raccordements).",
+      "actionEN": "Check lines (kinks, clamps, connections).",
+      "causes": [
+        { "checkForEN": "Clamped, kinked, or improperly connected line.", "checkForFR": "Ligne clampee, pliee ou mal raccordee.", "doEN": "Check all lines and look for kinks and clamps. Ensure: PAK Water Inlet (white elbow) is connected to white connector on the Control Unit. PAK Outlet Line (blue clamp) is connected to the Conductivity Connector (orange) on the Control Unit. All PAK clamps are unclamped. Disconnect and reconnect the Drain Line.", "doFR": "Verifier toutes les lignes (pliures, clamps). S'assurer que : l'entree d'eau du PAK (coude blanc) est raccordee au connecteur blanc de l'unite de commande ; la ligne de sortie du PAK (clamp bleu) est raccordee au connecteur de conductivite (orange) ; tous les clamps du PAK sont ouverts ; deconnecter puis reconnecter la ligne de drain." }
+      ],
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Appuyer sur GO.",
+        "Si l'alarme persiste, contacter le support technique local."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Press GO.",
+        "If the alarm continues, contact your local Technical Support."
+      ]
+    },
+    {
+      "numero": "54",
+      "appareil": "PureFlow SL",
+      "titreEN": "Fluid Leak in PAK",
+      "titreFR": "Fuite de fluide dans le PAK",
+      "type": "ALARME",
+      "actionFR": "Retirer le PAK, secher le capteur de fuite et le dessous du PAK, reinstaller.",
+      "actionEN": "Remove PAK, dry leak sensor and bottom of PAK, reinstall.",
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Appuyer sur GO.",
+        "Si l'alarme persiste : retirer le PAK ; secher le capteur de fuite du PAK ; secher le dessous du PAK ; reinstaller le PAK. Si l'alarme persiste, appeler le support technique local.",
+        "Si le capteur de fuite reste rouge apres ces etapes, du fluide est encore present. S'il est vert, le fluide a ete elimine."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Press GO.",
+        "If the alarm continues: Remove the PAK. Dry the PAK leak sensor. Dry the bottom of the PAK. Reinstall the PAK. If the alarm continues, call your local Technical Support.",
+        "If the leak sensor remains red after these steps, fluid is still present. If it turns green, fluid has been removed."
+      ]
+    },
+    {
+      "numero": "43",
+      "appareil": "PureFlow SL",
+      "titreEN": "Conductivity Test Failed",
+      "titreFR": "Echec du test de conductivite",
+      "type": "ALARME",
+      "actionFR": "Verifier lignes, drain et type de SAK. Recommencer le test.",
+      "actionEN": "Check lines, drain and SAK type. Restart the test.",
+      "phase": "MAKE BATCH",
+      "causes": [
+        { "checkForEN": "Incorrectly set SAK type.", "checkForFR": "Type de SAK mal configure.", "doEN": "Discontinue use of PureFlow SL and use bagged dialysate for treatment.", "doFR": "Arreter l'utilisation du PureFlow SL et utiliser des poches de dialysat pour le traitement." },
+        { "checkForEN": "Kinked green sleeve lines.", "checkForFR": "Lignes a manchon vert pliees.", "doEN": "Unkink lines.", "doFR": "Deplier les lignes." },
+        { "checkForEN": "Drain Line not properly connected.", "checkForFR": "Ligne de drain mal raccordee.", "doEN": "Disconnect and reconnect the Drain Line.", "doFR": "Deconnecter et reconnecter la ligne de drain." },
+        { "checkForEN": "A blocked Drain Line.", "checkForFR": "Ligne de drain bouchee.", "doEN": "Perform Drain Line flush procedure.", "doFR": "Effectuer la procedure de rincage de la ligne de drain." }
+      ],
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Verifier les lignes (clamps fermes, pliures) ; ouvrir les clamps fermes et corriger les pliures.",
+        "Pousser sur le SAK pour melanger le fluide.",
+        "Appuyer sur GO pour relancer le test.",
+        "Si le panneau affiche 'Clamp Line With Blue Check Valve', clamper la ligne de remplissage du SAK (ligne avec le clapet anti-retour bleu) avec un clamp non-crante.",
+        "Appuyer sur GO. Le PureFlow SL fonctionnera environ trois minutes.",
+        "Apres environ trois minutes, le panneau affiche Remove Clamp (retirer le clamp).",
+        "Retirer le clamp de la ligne de remplissage du SAK.",
+        "Appuyer sur GO et relancer le test.",
+        "Si l'alarme persiste, appeler le support technique local."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Check the lines for closed clamps and kinks; open any closed clamps and correct any kinked lines.",
+        "Push on the SAK to mix the fluid.",
+        "Press GO to retry the test.",
+        "If the Control Panel displays 'Clamp Line With Blue Check Valve', then clamp the SAK Fill Line (line with the blue check valve) with a non-serrated clamp.",
+        "Press GO. The PureFlow SL will run for approximately three minutes.",
+        "After about three minutes, the Control Panel displays Remove Clamp.",
+        "Remove the clamp from the SAK Fill Line.",
+        "Press GO and retry the test.",
+        "If the alarm continues, call your local Technical Support."
+      ]
+    },
+    {
+      "numero": "44",
+      "appareil": "PureFlow SL",
+      "titreEN": "No Flow Detected Through Conductivity Line",
+      "titreFR": "Aucun debit detecte dans la ligne de conductivite",
+      "type": "ALARME",
+      "actionFR": "Verifier raccordements et clamps de la ligne de conductivite et du SAK.",
+      "actionEN": "Check conductivity line and SAK connections and clamps.",
+      "phase": "MAKE BATCH",
+      "causes": [
+        { "checkForEN": "Flow through the Conductivity Line.", "checkForFR": "Debit dans la ligne de conductivite.", "doEN": "Ensure: Conductivity Line (orange) is connected to the conductivity sensor. Conductivity orange clamp is unclamped. All SAK lines are not kinked, clamped, or pinched. Control Unit Drain Line is connected and can drain. SAK has unfolded properly.", "doFR": "S'assurer que : la ligne de conductivite (orange) est raccordee au capteur de conductivite ; le clamp orange est ouvert ; aucune ligne du SAK n'est pliee, clampee ou pincee ; la ligne de drain de l'unite est raccordee et peut drainer ; le SAK s'est correctement deplie." }
+      ],
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Identifier et corriger la (les) cause(s) probable(s).",
+        "Appuyer sur GO."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Identify and fix the probable cause(s).",
+        "Press GO."
+      ]
+    },
+    {
+      "numero": "51b",
+      "appareil": "PureFlow SL",
+      "titreEN": "Output Pressure High (during batch)",
+      "titreFR": "Pression de sortie elevee (pendant batch)",
+      "type": "ALARME",
+      "actionFR": "Verifier lignes et clamps PAK/SAK/drain.",
+      "actionEN": "Check PAK/SAK/drain lines and clamps.",
+      "phase": "MAKE BATCH",
+      "causes": [
+        { "checkForEN": "Clamped, kinked, or improperly connected line.", "checkForFR": "Ligne clampee, pliee ou mal raccordee.", "doEN": "Ensure: All lines from the PAK and Control Unit to the SAK are unclamped and not kinked. Drain Line is connected to the back of the Control Unit.", "doFR": "S'assurer que : toutes les lignes du PAK et de l'unite vers le SAK sont declampees et non pliees ; la ligne de drain est raccordee a l'arriere de l'unite." }
+      ],
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Identifier et corriger la (les) cause(s) probable(s).",
+        "Appuyer sur GO.",
+        "Si l'alarme persiste, appeler le support technique local."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Identify and fix the probable cause(s).",
+        "Press GO.",
+        "If the alarm continues, call your local Technical Support."
+      ]
+    },
+    {
+      "numero": "53",
+      "appareil": "PureFlow SL",
+      "titreEN": "Fluid Leak in Tub",
+      "titreFR": "Fuite de fluide dans la cuve",
+      "type": "ALARME",
+      "actionFR": "Trouver et corriger la source de la fuite. Verifier raccordements SAK.",
+      "actionEN": "Find and fix leak source. Check SAK connections.",
+      "phase": "MAKE BATCH",
+      "causes": [
+        { "checkForEN": "Loose connections that are causing a leak.", "checkForFR": "Raccordements desserres causant une fuite.", "doEN": "Ensure all SAK lines are connected and not leaking. Secure: SAK Water Inlet Line connection. All SAK connections. Cartridge Waste Line connection to Control Unit adapter.", "doFR": "S'assurer que toutes les lignes du SAK sont raccordees et ne fuient pas. Securiser : la connexion de la ligne d'entree d'eau du SAK ; toutes les connexions du SAK ; la connexion de la ligne d'effluent de la cartouche a l'adaptateur de l'unite." }
+      ],
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Si possible, trouver et corriger la source de la fuite. (Vous ne pourrez peut-etre pas soulever ou deplacer un SAK plein.)",
+        "Si une fuite est trouvee dans le SAK, une ligne du SAK ou un raccordement autre que celui du capteur de conductivite, appuyer sur STOP pour commencer a drainer le batch.",
+        "Si la fuite a ete trouvee et corrigee, appuyer sur GO."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "If possible, find and fix the source of the leak. (You may not be able to lift or move the full SAK.)",
+        "If a fluid leak is found in the SAK or any SAK lines or a connection other than the Conductivity Sensor connection, press STOP to begin draining the batch.",
+        "If you have found and corrected the leak, press GO."
+      ]
+    },
+    {
+      "numero": "52",
+      "appareil": "PureFlow SL",
+      "titreEN": "Fluid Leak in Control Unit",
+      "titreFR": "Fuite de fluide dans l'unite de commande",
+      "type": "ALARME",
+      "actionFR": "Appeler le support technique local.",
+      "actionEN": "Call local technical support.",
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Appuyer sur GO.",
+        "Appeler le support technique local."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Press GO.",
+        "Call your local Technical Support."
+      ]
+    },
+    {
+      "numero": "833",
+      "appareil": "PureFlow SL",
+      "titreEN": "J1 Connection Loose",
+      "titreFR": "Connexion J1 desserree",
+      "type": "ALARME",
+      "actionFR": "Raccorder ou securiser la connexion J1.",
+      "actionEN": "Connect or secure J1.",
+      "causes": [
+        { "checkForEN": "J1 connection is loose or not connected.", "checkForFR": "Connexion J1 desserree ou non raccordee.", "doEN": "Connect or secure J1 connection.", "doFR": "Raccorder ou securiser la connexion J1." }
+      ],
+      "procedureFR": [
+        "Appuyer sur STOP.",
+        "Identifier et corriger la (les) cause(s) probable(s).",
+        "Appuyer sur GO."
+      ],
+      "procedureEN": [
+        "Press STOP.",
+        "Identify and fix the probable cause(s).",
+        "Press GO."
+      ]
+    },
+    {
+      "numero": "*",
+      "appareil": "Express Fluid Warmer",
+      "titreEN": "Express Fluid Warmer alarm (generic)",
+      "titreFR": "Alarme Express Fluid Warmer (generique)",
+      "type": "ALARME",
+      "actionFR": "Afficher le code d'alarme avec les fleches HAUT/BAS, utiliser le User Guide du rechauffeur, puis revenir en TREATMENT.",
+      "actionEN": "Display alarm code with UP/DOWN arrows, use Warmer User Guide, then return to TREATMENT.",
+      "procedureFR": [
+        "Appuyer sur la fleche HAUT ou BAS pour afficher le code d'alarme.",
+        "Utiliser le User Guide de l'Express Fluid Warmer pour identifier la (les) cause(s) probable(s) et la corriger.",
+        "Appuyer sur la fleche HAUT pour revenir au mode TREATMENT.",
+        "Note : une temperature de fluide elevee peut aussi declencher une alarme 50 (high fluid temperature) du cycler."
+      ],
+      "procedureEN": [
+        "Press either the UP or DOWN arrow to display the alarm code.",
+        "Use the Express Fluid Warmer User Guide to identify the probable cause(s) and fix it.",
+        "Press the UP arrow to return to TREATMENT.",
+        "Note: a high fluid temperature can also trigger a cycler alarm 50 (high fluid temperature)."
+      ]
+    }
+  ]
+}
