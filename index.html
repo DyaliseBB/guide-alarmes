@@ -12,14 +12,63 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
   <link rel="stylesheet" href="styles.css">
-  <title>Guide Alarmes NxStage</title>
+  <title>Guide NxStage</title>
 </head>
 <body>
 
-  <!-- VUE LISTE -->
-  <section id="vueListe" class="vue active">
+  <!-- VUE ACCUEIL -->
+  <section id="vueAccueil" class="vue active">
     <header class="topbar">
       <div class="topbar-row">
+        <h1 data-i18n-fr="Guide NxStage" data-i18n-en="NxStage Guide">Guide NxStage</h1>
+        <button id="btnLangueAccueil" class="btn-lang">EN</button>
+      </div>
+      <p class="avert" data-i18n-fr="Document de courtoisie - usage personnel. Ne remplace pas le User Guide Fresenius/NxStage."
+                       data-i18n-en="Courtesy document - personal use. Does not replace the Fresenius/NxStage User Guide.">
+        Document de courtoisie - usage personnel. Ne remplace pas le User Guide Fresenius/NxStage.
+      </p>
+    </header>
+
+    <div class="accueil">
+      <button class="carte-accueil carte-accueil-alarmes" id="btnAccueilAlarmes">
+        <div class="carte-accueil-icone">!</div>
+        <div class="carte-accueil-texte">
+          <div class="carte-accueil-titre" data-i18n-fr="Codes Alarmes" data-i18n-en="Alarm Codes">Codes Alarmes</div>
+          <div class="carte-accueil-sous" data-i18n-fr="64 codes Cycler / PureFlow / Warmer" data-i18n-en="64 codes Cycler / PureFlow / Warmer">64 codes Cycler / PureFlow / Warmer</div>
+        </div>
+        <div class="carte-accueil-fleche">›</div>
+      </button>
+
+      <button class="carte-accueil carte-accueil-montage" id="btnAccueilMontage">
+        <div class="carte-accueil-icone">M</div>
+        <div class="carte-accueil-texte">
+          <div class="carte-accueil-titre" data-i18n-fr="Montage" data-i18n-en="Setup">Montage</div>
+          <div class="carte-accueil-sous" data-i18n-fr="Preparation et amorcage du cycler" data-i18n-en="Cycler preparation and priming">Preparation et amorcage du cycler</div>
+        </div>
+        <div class="carte-accueil-fleche">›</div>
+      </button>
+
+      <button class="carte-accueil carte-accueil-demontage" id="btnAccueilDemontage">
+        <div class="carte-accueil-icone">D</div>
+        <div class="carte-accueil-texte">
+          <div class="carte-accueil-titre" data-i18n-fr="Demontage" data-i18n-en="Disconnection">Demontage</div>
+          <div class="carte-accueil-sous" data-i18n-fr="Restitution, debranchement, entretien" data-i18n-en="Return, disconnection, maintenance">Restitution, debranchement, entretien</div>
+        </div>
+        <div class="carte-accueil-fleche">›</div>
+      </button>
+    </div>
+
+    <div class="accueil-footer">
+      <button id="btnAccueilMenu" class="btn-secondaire-petit" data-i18n-fr="Reglages" data-i18n-en="Settings">Reglages</button>
+      <span class="accueil-version" id="accueilEditionStatus"></span>
+    </div>
+  </section>
+
+  <!-- VUE LISTE -->
+  <section id="vueListe" class="vue">
+    <header class="topbar">
+      <div class="topbar-row">
+        <button class="btn-back" id="btnRetourListe" aria-label="Accueil">‹</button>
         <h1 data-i18n-fr="Guide Alarmes" data-i18n-en="Alarms Guide">Guide Alarmes</h1>
         <button id="btnLangue" class="btn-lang">EN</button>
       </div>
@@ -55,7 +104,7 @@
     <button id="btnNouvelle" class="fab" aria-label="Nouvelle alarme">+</button>
   </section>
 
-  <!-- VUE DETAIL -->
+  <!-- VUE DETAIL ALARME -->
   <section id="vueDetail" class="vue">
     <header class="topbar topbar-detail">
       <button class="btn-back" id="btnRetourDetail" aria-label="Retour">‹</button>
@@ -65,7 +114,7 @@
     <div id="detailContenu" class="detail-contenu"></div>
   </section>
 
-  <!-- VUE EDIT -->
+  <!-- VUE EDIT ALARME -->
   <section id="vueEdit" class="vue">
     <header class="topbar topbar-detail">
       <button class="btn-back" id="btnAnnulerEdit" aria-label="Annuler">×</button>
@@ -147,10 +196,82 @@
     </div>
   </section>
 
+  <!-- VUE INTRO PROCEDURE -->
+  <section id="vueProcIntro" class="vue">
+    <header class="topbar topbar-detail" id="procIntroEntete">
+      <button class="btn-back" id="btnRetourProcIntro" aria-label="Accueil">‹</button>
+      <h1 id="procIntroTitre"></h1>
+      <button class="btn-action btn-action-discret" id="btnEditerProc" hidden data-i18n-fr="Editer" data-i18n-en="Edit">Editer</button>
+    </header>
+    <div class="proc-intro-contenu" id="procIntroContenu"></div>
+  </section>
+
+  <!-- VUE ETAPE PROCEDURE (1 etape a la fois) -->
+  <section id="vueEtape" class="vue">
+    <header class="topbar topbar-detail" id="etapeEntete">
+      <button class="btn-back" id="btnRetourEtape" aria-label="Retour">‹</button>
+      <h1 id="etapeProgres"></h1>
+      <button class="btn-action btn-action-discret" id="btnEditerEtape" hidden data-i18n-fr="Editer" data-i18n-en="Edit">Editer</button>
+    </header>
+    <div class="etape-contenu" id="etapeContenu"></div>
+    <div class="etape-actions" id="etapeActions">
+      <button id="btnEtapePrec" class="btn-etape btn-etape-prec">
+        <span class="fleche">‹</span> <span data-i18n-fr="Precedent" data-i18n-en="Previous">Precedent</span>
+      </button>
+      <button id="btnEtapeValider" class="btn-etape btn-etape-valider">
+        <span data-i18n-fr="Valider" data-i18n-en="Validate">Valider</span> <span class="fleche">›</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- VUE EDIT ETAPE -->
+  <section id="vueEtapeEdit" class="vue">
+    <header class="topbar topbar-detail">
+      <button class="btn-back" id="btnAnnulerEtapeEdit" aria-label="Annuler">×</button>
+      <h1 id="etapeEditTitre" data-i18n-fr="Modifier l'etape" data-i18n-en="Edit step">Modifier l'etape</h1>
+      <button class="btn-action" id="btnEnregistrerEtapeEdit" data-i18n-fr="OK" data-i18n-en="OK">OK</button>
+    </header>
+    <div class="edit-form">
+      <div class="form-row">
+        <label>Titre FR</label>
+        <input type="text" id="etapeEditTitreFR">
+      </div>
+      <div class="form-row">
+        <label>Titre EN</label>
+        <input type="text" id="etapeEditTitreEN">
+      </div>
+      <div class="form-row">
+        <label data-i18n-fr="Explication FR" data-i18n-en="Explanation FR">Explication FR</label>
+        <textarea id="etapeEditTexteFR" rows="8"></textarea>
+      </div>
+      <div class="form-row">
+        <label data-i18n-fr="Explication EN" data-i18n-en="Explanation EN">Explication EN</label>
+        <textarea id="etapeEditTexteEN" rows="8"></textarea>
+      </div>
+      <div class="form-section">
+        <div class="section-titre">
+          <h3 data-i18n-fr="Photo principale" data-i18n-en="Main photo">Photo principale</h3>
+        </div>
+        <div class="photo-edit-preview" id="etapeEditPhotoPreview"></div>
+        <div class="photo-edit-actions">
+          <label class="btn-secondaire" for="etapeEditPhotoFile" data-i18n-fr="Choisir une photo" data-i18n-en="Choose a photo">Choisir une photo</label>
+          <input type="file" id="etapeEditPhotoFile" accept="image/*" hidden>
+          <button class="btn-secondaire" id="btnEtapeRetirerPhoto" data-i18n-fr="Retirer" data-i18n-en="Remove">Retirer</button>
+        </div>
+      </div>
+      <div class="form-actions-bas">
+        <button class="btn-danger" id="btnSupprimerEtape" data-i18n-fr="Supprimer cette etape" data-i18n-en="Delete this step">Supprimer cette etape</button>
+      </div>
+    </div>
+  </section>
+
   <!-- MENU MODAL -->
   <div id="menu" class="menu-overlay" hidden>
     <div class="menu-content">
+      <button class="menu-item" id="menuVerrouillage" data-i18n-fr="Mode edition" data-i18n-en="Edit mode">Mode edition</button>
+      <button class="menu-item" id="menuChangerPin" data-i18n-fr="Changer le PIN" data-i18n-en="Change PIN">Changer le PIN</button>
       <button class="menu-item" id="menuReset" data-i18n-fr="Reinitialiser donnees Fresenius" data-i18n-en="Reset to Fresenius data">Reinitialiser donnees Fresenius</button>
+      <button class="menu-item" id="menuResetProc" data-i18n-fr="Reinitialiser les procedures" data-i18n-en="Reset procedures">Reinitialiser les procedures</button>
       <button class="menu-item" id="menuExport" data-i18n-fr="Exporter mes donnees (JSON)" data-i18n-en="Export my data (JSON)">Exporter mes donnees (JSON)</button>
       <button class="menu-item" id="menuImport" data-i18n-fr="Importer un fichier JSON" data-i18n-en="Import JSON file">Importer un fichier JSON</button>
       <button class="menu-item" id="menuApropos" data-i18n-fr="A propos" data-i18n-en="About">A propos</button>
@@ -168,6 +289,20 @@
       <div class="modal-boutons">
         <button class="menu-item menu-cancel" id="modalTexteAnnuler" data-i18n-fr="Annuler" data-i18n-en="Cancel">Annuler</button>
         <button class="menu-item" id="modalTexteOK">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PIN -->
+  <div id="modalPin" class="menu-overlay" hidden>
+    <div class="menu-content">
+      <h3 id="modalPinTitre"></h3>
+      <p class="modal-pin-sous" id="modalPinSous"></p>
+      <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" id="modalPinSaisie" class="modal-pin-input" autocomplete="off">
+      <div class="modal-pin-erreur" id="modalPinErreur" hidden></div>
+      <div class="modal-boutons">
+        <button class="menu-item menu-cancel" id="modalPinAnnuler" data-i18n-fr="Annuler" data-i18n-en="Cancel">Annuler</button>
+        <button class="menu-item" id="modalPinOK">OK</button>
       </div>
     </div>
   </div>
