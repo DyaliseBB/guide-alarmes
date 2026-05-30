@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "metadata": {
+    "source": "Procedure.pdf + Theradial Resume utilisation DT-FOR-125 V7 01.2020",
+    "note": "Document de courtoisie - usage personnel. Ne remplace pas la formation NxSTEPS ni le User Guide officiel Fresenius/NxStage."
+  },
+  "procedures": {
+    "montage": {
+      "id": "montage",
+      "icone": "M",
+      "couleur": "#1976d2",
+      "titreFR": "Montage de la machine",
+      "titreEN": "Machine setup",
+      "sousTitreFR": "Preparation, amorcage et parametrage avant branchement",
+      "sousTitreEN": "Preparation, priming and settings before connection",
+      "introFR": "Materiel necessaire a la seance :\n- 1 cassette\n- 4 poches de dialysat\n- 1 poche serum physiologique 1 L\n- 1 pieuvre\n- 1 seringue 20 ml\n- 1 haricot",
+      "introEN": "Material needed for the session:\n- 1 cassette\n- 4 dialysate bags\n- 1 saline bag 1 L\n- 1 octopus manifold\n- 1 syringe 20 ml\n- 1 kidney basin",
+      "etapes": [
+        {
+          "id": "m01",
+          "titreFR": "Mettre la poche de dialysat en chauffe",
+          "titreEN": "Place dialysate bag on the heater",
+          "texteFR": "Placer une poche de dialysat sur le rechauffeur et la sangler. Allumer le rechauffeur, regler la temperature a 38 C (8 barres allumees, soit environ 37 C effectifs au cycler).",
+          "texteEN": "Place a dialysate bag on the heater and strap it. Turn on the heater, set the temperature to 38 C (8 bars lit, ~37 C effective at the cycler).",
+          "photo": "photos/poche-dialysat.jpg",
+          "photoAltFR": "Poche de dialysat sur le rechauffeur",
+          "photoAltEN": "Dialysate bag on heater"
+        },
+        {
+          "id": "m02",
+          "titreFR": "Mettre le cycler sous tension",
+          "titreEN": "Turn on the cycler",
+          "texteFR": "Brancher la prise electrique. Appuyer sur le bouton ON situe a l'arriere du cycler. Attendre l'affichage des 2 petites barres qui clignotent.\n\nPuis ouvrir la porte (caissette) du cycler.",
+          "texteEN": "Plug in the power cord. Press the ON button on the back of the cycler. Wait for the 2 small flashing bars to appear.\n\nThen open the cycler door (cassette compartment).",
+          "photo": "photos/cycler-sous-tension.jpg",
+          "photoAltFR": "Cycler sous tension, ecran allume",
+          "photoAltEN": "Cycler powered on, display lit",
+          "photo2": "photos/barres.jpg",
+          "photoAlt2FR": "Les 2 petites barres clignotantes sur l'ecran",
+          "photoAlt2EN": "The 2 small flashing bars on the display"
+        },
+        {
+          "id": "m03",
+          "titreFR": "Preparer la cassette",
+          "titreEN": "Prepare the cassette",
+          "texteFR": "Ouvrir l'emballage de la cassette et inspecter qu'elle ne presente aucun defaut.\n\n- Recuperer le petit robinet (circuit ferme).\n- Enlever les liens de droite vers la gauche et verifier chaque connectique.\n- Laisser le lien du haut (sac a main) en place.",
+          "texteEN": "Open the cassette packaging and inspect it for any defects.\n\n- Retrieve the small stopcock (closed circuit).\n- Remove the ties from right to left and check each connector.\n- Leave the top tie (handbag) in place.",
+          "photo": "photos/preparer-cassette.jpg",
+          "photoAltFR": "Cassette posee a plat avec les liens",
+          "photoAltEN": "Cassette laid flat with ties visible"
+        },
+        {
+          "id": "m04",
+          "titreFR": "Inserer la cassette dans le cycler",
+          "titreEN": "Insert the cassette into the cycler",
+          "texteFR": "Inserer la cassette dans le cycler en placant les 3 lignes (Veineux / Dialysat / Artere) dans leurs detecteurs d'air respectifs.\n\nFermer la porte du cycler en poussant la poignee vers le bas jusqu'au CLIC.",
+          "texteEN": "Insert the cassette into the cycler, placing the 3 lines (Venous / Dialysate / Arterial) into their respective air detectors.\n\nClose the cycler door by pushing the handle down until you hear a CLICK.",
+          "photo": "photos/cassette-cycler.jpg",
+          "photoAltFR": "Cassette inseree, porte du cycler fermee",
+          "photoAltEN": "Cassette inserted, cycler door closed"
+        },
+        {
+          "id": "m05",
+          "titreFR": "Visser le capteur de pression arterielle",
+          "titreEN": "Screw on the arterial pressure sensor",
+          "texteFR": "Visser le capteur de pression arterielle sur son port. Verifier que le raccord est bien serre (mais sans forcer).",
+          "texteEN": "Screw the arterial pressure sensor onto its port. Make sure the connection is well tightened (without forcing).",
+          "photo": "photos/capteur-arteriel.jpg",
+          "photoAltFR": "Capteur de pression arterielle visse",
+          "photoAltEN": "Arterial pressure sensor screwed in"
+        },
+        {
+          "id": "m06",
+          "titreFR": "Preparer la poche de serum physiologique",
+          "titreEN": "Prepare the saline bag",
+          "texteFR": "Poser la poche de 1 L de serum physiologique a plat sur le plan de travail.\n\n- Enlever le bouchon bleu.\n- Suspendre la poche de restitution a la petite potence.\n- Inserer (percuter) l'aiguille de la ligne dans la poche de serum jusqu'a la garde.\n- Accrocher la poche sur le support.",
+          "texteEN": "Lay the 1 L saline bag flat on the work surface.\n\n- Remove the blue cap.\n- Hang the return bag on the small IV pole.\n- Insert (spike) the line needle into the saline bag up to the hub.\n- Hang the bag on the support.",
+          "photo": "photos/serum.jpg",
+          "photoAltFR": "Poche de serum physiologique percutee et suspendue",
+          "photoAltEN": "Saline bag spiked and hung"
+        },
+        {
+          "id": "m07",
+          "titreFR": "Lancer l'amorcage (touche remplissage)",
+          "titreEN": "Start priming (Fill button)",
+          "texteFR": "Appuyer sur la touche allumee Amorcage / Bolus / Restitution (icone goutte/verre) sur le cycler.\n\nLe cycler demarre l'amorcage et les tests pendant environ 23 minutes.",
+          "texteEN": "Press the lit Prime / Bolus / Return key (drop/cup icon) on the cycler.\n\nThe cycler starts priming and self-tests for approximately 23 minutes.",
+          "photo": "photos/remplissage.jpg",
+          "photoAltFR": "Touche remplissage / amorcage",
+          "photoAltEN": "Fill / prime button"
+        },
+        {
+          "id": "m08",
+          "titreFR": "Pendant l'amorcage : preparer la pieuvre",
+          "titreEN": "While priming: prepare the octopus",
+          "texteFR": "En attendant la fin du cycle d'amorcage :\n\n- Mettre les 3 poches de dialysat sur le support (potence).\n- Preparer la pieuvre : enlever le lien restant et la connectique inutilisee.\n- Connecter la pieuvre sur la poche dialysat en chauffe, casser les cristaux.\n- Devisser les embouts de la pieuvre pour purger les circuits, puis fermer les 9 clamps.\n- Relier la pieuvre aux 3 poches de dialysat suspendues et casser les cristaux.",
+          "texteEN": "While the priming cycle runs:\n\n- Place the 3 dialysate bags on the support (IV pole).\n- Prepare the octopus: remove the remaining tie and unused connectors.\n- Connect the octopus to the heating dialysate bag, break the safety canules.\n- Unscrew the octopus tips to purge the lines, then close the 9 clamps.\n- Connect the octopus to the 3 hung dialysate bags and break the safety canules.",
+          "photo": "photos/pieuvre.jpg",
+          "photoAltFR": "Pieuvre purgee, clamps fermes, branchee aux poches",
+          "photoAltEN": "Octopus purged, clamps closed, connected to bags"
+        },
+        {
+          "id": "m09",
+          "titreFR": "Connecter le petit raccord au dialysat en chauffe",
+          "titreEN": "Connect the small fitting to the heating dialysate",
+          "texteFR": "Ouvrir les clamps verts de la pieuvre.\n\nRaccorder le petit raccord (clamp vert) sur la poche dialysat en chauffe (rechauffeur). Devisser legerement pour chasser l'air, puis clamper.\n\nPlacer la ligne effluent (ligne pipi, clamp jaune) au niveau du lavabo / evacuation.",
+          "texteEN": "Open the green clamps of the octopus.\n\nConnect the small fitting (green clamp) to the heating dialysate bag (heater). Slightly unscrew to bleed the air, then clamp.\n\nPlace the effluent line (drain line, yellow clamp) into the sink / drain.",
+          "photo": "photos/raccord.jpg",
+          "photoAltFR": "Petit raccord et ligne effluent en place",
+          "photoAltEN": "Small fitting and effluent line in place"
+        },
+        {
+          "id": "m10",
+          "titreFR": "Verifier l'ecran : phase 23 puis 888 puis 1234 abcd",
+          "titreEN": "Check the display: phase 23 then 888 then 1234 abcd",
+          "texteFR": "Une fois que le cycler a termine son cycle, l'ecran affiche successivement :\n\n- Phase 23 (recirculation)\n- Test sonore 888 (3 segments)\n- Test visuel 1234 abcd efgh - 987 654 321\n\nVerifier que tous les segments s'allument correctement.",
+          "texteEN": "Once the cycler completes its cycle, the display shows successively:\n\n- Phase 23 (recirculation)\n- Audible test 888 (3 segments)\n- Visual test 1234 abcd efgh - 987 654 321\n\nCheck that all segments light up correctly.",
+          "photo": "photos/affichage-888.jpg",
+          "photo2": "photos/affichage-123.jpg",
+          "photoAltFR": "Test sonore 888 sur l'ecran du cycler",
+          "photoAltEN": "Audible test 888 on cycler display",
+          "photoAlt2FR": "Test visuel 1234 abcd 987 654 321",
+          "photoAlt2EN": "Visual test 1234 abcd 987 654 321"
+        },
+        {
+          "id": "m11",
+          "titreFR": "Valider les tests : touche SILENCE",
+          "titreEN": "Acknowledge the tests: SILENCE key",
+          "texteFR": "Appuyer sur la touche SILENCE (icone haut-parleur barre, jaune) pour valider les 2 tests sonores et visuels.",
+          "texteEN": "Press the SILENCE key (crossed-out speaker icon, yellow) to acknowledge the 2 audible and visual tests.",
+          "photo": "photos/touche-silence.jpg",
+          "photoAltFR": "Touche SILENCE du cycler",
+          "photoAltEN": "Cycler SILENCE button"
+        },
+        {
+          "id": "m12",
+          "titreFR": "Debuller le capteur de pression",
+          "titreEN": "Debubble the pressure sensor",
+          "texteFR": "Tapoter doucement sur la capsule du capteur de pression arterielle (PA) pour faire remonter les bulles d'air.\n\nPositionner le site d'evacuation d'air vers le haut.",
+          "texteEN": "Gently tap on the arterial pressure sensor (AP) capsule to bring the air bubbles up.\n\nPosition the air vent site upwards.",
+          "photo": "",
+          "photoMissingFR": "Photo a ajouter : geste de debullage du capteur PA",
+          "photoMissingEN": "Photo to add: tapping/debubbling AP sensor"
+        },
+        {
+          "id": "m13",
+          "titreFR": "Debuller le rein (dialyseur)",
+          "titreEN": "Debubble the kidney (dialyzer)",
+          "texteFR": "Sortir le rein de son logement, enlever les 2 scotchs. Tapoter le dialyseur a la main, ligne veineuse vers le haut, pour eliminer les bulles d'air.\n\nRemettre le rein dans son logement, connecteur bleu vers le haut.",
+          "texteEN": "Take the kidney out of its holder, remove the 2 tape pieces. Tap the dialyzer by hand, venous line upwards, to remove the air bubbles.\n\nPut the kidney back in its holder, blue connector upwards.",
+          "photo": "photos/debuller-rein.jpg",
+          "photoAltFR": "Debullage du rein, ligne veineuse vers le haut",
+          "photoAltEN": "Kidney debubbling, venous line upwards"
+        },
+        {
+          "id": "m14",
+          "titreFR": "Purger les bulles : capteur + rein (x2)",
+          "titreEN": "Purge bubbles: sensor + kidney (x2)",
+          "texteFR": "Ouvrir la purge, eliminer les bulles d'air, clamper et faire un noeud.\n\nRepeter cette operation DEUX FOIS : capteur de pression + rein.",
+          "texteEN": "Open the purge, remove the air bubbles, clamp and tie a knot.\n\nRepeat this operation TWICE: pressure sensor + kidney.",
+          "photo": "photos/noeud.jpg",
+          "photoAltFR": "Purge clampee avec noeud",
+          "photoAltEN": "Clamped purge with knot tied"
+        },
+        {
+          "id": "m15",
+          "titreFR": "Seringue 20 ml : pousser 5 ml cote bleu",
+          "titreEN": "20 ml syringe: push 5 ml on the blue side",
+          "texteFR": "Prendre la seringue de 20 ml, clamper le rein, enlever le bouchon et visser la seringue sur le cote bleu.\n\nLa seringue doit pousser 5 ml.",
+          "texteEN": "Take the 20 ml syringe, clamp the kidney, remove the cap and screw the syringe onto the blue side.\n\nThe syringe must push 5 ml.",
+          "photo": "photos/clamp-rein.jpg",
+          "photoAltFR": "Clamper le rein",
+          "photoAltEN": "Clamp the kidney",
+          "photo2": "photos/mise-en-place-seringue-rein.jpg",
+          "photoAlt2FR": "Mise en place de la seringue sur le cote bleu",
+          "photoAlt2EN": "Setting up the syringe on the blue side",
+          "photo3": "photos/seringue-rein.jpg",
+          "photoAlt3FR": "Seringue 20 ml vissee cote bleu du rein",
+          "photoAlt3EN": "20 ml syringe screwed on blue side of kidney"
+        },
+        {
+          "id": "m16",
+          "titreFR": "Appuyer sur STOP pour terminer la recirculation",
+          "titreEN": "Press STOP to end recirculation",
+          "texteFR": "Appuyer sur la touche STOP (octogone rouge) du cycler pour mettre fin a la phase de recirculation.\n\nApres avoir appuye sur STOP, purger le raccord en T de la ligne arterielle et fermer le clamp blanc.",
+          "texteEN": "Press the STOP key (red octagon) on the cycler to end the recirculation phase.\n\nAfter pressing STOP, purge the T-fitting of the arterial line and close the white clamp.",
+          "photo": "photos/touche-stop.jpg",
+          "photoAltFR": "Touche STOP du cycler",
+          "photoAltEN": "Cycler STOP button"
+        },
+        {
+          "id": "m17",
+          "titreFR": "Saisir les parametres de seance",
+          "titreEN": "Enter session parameters",
+          "texteFR": "Saisir les informations sur la machine :\n\n- Bandeau VERT : 20 litres (volume dialysat)\n- Bandeau JAUNE : 1 litre / heure (ultra filtration - voir tableau personnel)\n- Bandeau ROUGE : 320 (debit pompe a sang en ml/min)\n\nVerifier le temps de seance affiche.",
+          "texteEN": "Enter the machine information:\n\n- GREEN band: 20 liters (dialysate volume)\n- YELLOW band: 1 liter / hour (ultrafiltration - see personal chart)\n- RED band: 320 (blood pump rate in ml/min)\n\nCheck the displayed session time.",
+          "photo": "photos/parametres.jpg",
+          "photoAltFR": "Ecran cycler avec les 3 bandeaux vert / jaune / rouge renseignes",
+          "photoAltEN": "Cycler display with 3 bands green / yellow / red filled in"
+        },
+        {
+          "id": "m18",
+          "titreFR": "Branchement patient (regles d'asepsie)",
+          "titreEN": "Patient connection (aseptic rules)",
+          "texteFR": "Dans le respect strict des regles d'asepsie :\n\n- Fermer les 9 clamps des lignes (bleu, rouge, vert, jaune, blanc).\n- Raccorder les lignes en respectant les codes couleur.\n- Ouvrir les clamps verts et jaunes.\n- Connecter les lignes a sang au patient.\n- Ouvrir les clamps ROUGES et BLEUS.\n- Appuyer sur la touche TRAITEMENT (verte).\n- Augmenter progressivement le debit de la pompe a sang jusqu'a la valeur prescrite, en controlant PA et PV.",
+          "texteEN": "Following strict aseptic rules:\n\n- Close the 9 line clamps (blue, red, green, yellow, white).\n- Connect the lines respecting the color codes.\n- Open the green and yellow clamps.\n- Connect the blood lines to the patient.\n- Open the RED and BLUE clamps.\n- Press the TREATMENT key (green).\n- Gradually increase the blood pump rate to the prescribed value, monitoring AP and VP.",
+          "photo": "photos/clamp-1.jpg",
+          "photoAltFR": "Sequence clamps - etape 1",
+          "photoAltEN": "Clamp sequence - step 1",
+          "photo2": "photos/clamp-2.jpg",
+          "photoAlt2FR": "Sequence clamps - etape 2",
+          "photoAlt2EN": "Clamp sequence - step 2",
+          "photo3": "photos/clamp-3.jpg",
+          "photoAlt3FR": "Sequence clamps - etape 3",
+          "photoAlt3EN": "Clamp sequence - step 3",
+          "photo4": "photos/clamp-4.jpg",
+          "photoAlt4FR": "Sequence clamps - etape 4",
+          "photoAlt4EN": "Clamp sequence - step 4",
+          "photo5": "photos/traitement.jpg",
+          "photoAlt5FR": "Touche TRAITEMENT verte du cycler",
+          "photoAlt5EN": "Cycler green TREATMENT button"
+        }
+      ]
+    },
+    "demontage": {
+      "id": "demontage",
+      "icone": "D",
+      "couleur": "#c62828",
+      "titreFR": "Demontage et fin de seance",
+      "titreEN": "Disconnection and end of session",
+      "sousTitreFR": "Restitution, debranchement, entretien du cycler",
+      "sousTitreEN": "Return, disconnection, cycler maintenance",
+      "introFR": "Etapes a effectuer apres la fin de la seance de dialyse, dans le respect des regles d'asepsie. L'evacuation du circuit et des poches doit etre conforme aux recommandations du centre.",
+      "introEN": "Steps to perform after the end of the dialysis session, following aseptic rules. The disposal of the circuit and bags must follow the center's recommendations.",
+      "etapes": [
+        {
+          "id": "d01",
+          "titreFR": "Appuyer sur STOP",
+          "titreEN": "Press STOP",
+          "texteFR": "Appuyer sur la touche STOP (octogone rouge) pour arreter le traitement.\n\nLe volume de restitution s'affiche a l'ecran (typiquement 277 ml).",
+          "texteEN": "Press the STOP key (red octagon) to stop the treatment.\n\nThe return volume is displayed on the screen (typically 277 ml).",
+          "photo": "photos/touche-stop.jpg",
+          "photoAltFR": "Touche STOP du cycler",
+          "photoAltEN": "Cycler STOP button"
+        },
+        {
+          "id": "d02",
+          "titreFR": "Clamper et connecter a la poche de restitution",
+          "titreEN": "Clamp and connect to the return bag",
+          "texteFR": "Clamper la ligne arterielle et la connecter a la poche de restitution (poche de serum physiologique).",
+          "texteEN": "Clamp the arterial line and connect it to the return bag (saline bag).",
+          "photo": "",
+          "photoMissingFR": "Photo a ajouter : ligne arterielle clampee, branchement poche restitution",
+          "photoMissingEN": "Photo to add: arterial line clamped, return bag connection"
+        },
+        {
+          "id": "d03",
+          "titreFR": "Lancer la restitution",
+          "titreEN": "Start the return",
+          "texteFR": "Appuyer sur la touche Amorcage / Bolus / Restitution (icone goutte/verre) pour declencher la restitution du sang.\n\nLa pompe a sang s'arrete automatiquement a la fin.",
+          "texteEN": "Press the Prime / Bolus / Return key (drop/cup icon) to trigger the blood return.\n\nThe blood pump stops automatically at the end.",
+          "photo": "photos/remplissage.jpg",
+          "photoAltFR": "Touche Amorcage / Bolus / Restitution",
+          "photoAltEN": "Prime / Bolus / Return button"
+        },
+        {
+          "id": "d04",
+          "titreFR": "Retirer les aiguilles",
+          "titreEN": "Remove the needles",
+          "texteFR": "Retirer les deux aiguilles (arterielle puis veineuse) dans le respect du protocole de compression et d'asepsie.",
+          "texteEN": "Remove both needles (arterial then venous) following the compression and aseptic protocol.",
+          "photo": "",
+          "photoMissingFR": "Photo a ajouter : compression apres retrait des aiguilles",
+          "photoMissingEN": "Photo to add: compression after needle removal"
+        },
+        {
+          "id": "d05",
+          "titreFR": "Relever les donnees du traitement",
+          "titreEN": "Record the treatment data",
+          "texteFR": "Appuyer sur la touche Debit / Volume et noter :\n\n- La duree du traitement\n- Le volume de dialysat utilise\n- Le volume d'UF retire\n- Le volume de sang traite",
+          "texteEN": "Press the Rate / Volume key and record:\n\n- The treatment duration\n- The dialysate volume used\n- The UF volume removed\n- The blood volume treated",
+          "photo": "",
+          "photoMissingFR": "Photo a ajouter : touche Debit/Volume et ecran releve",
+          "photoMissingEN": "Photo to add: Rate/Volume button and reading screen"
+        },
+        {
+          "id": "d06",
+          "titreFR": "Eteindre le cycler",
+          "titreEN": "Turn off the cycler",
+          "texteFR": "Eteindre le cycler en appuyant sur le bouton ON / OFF a l'arriere.\n\nL'evacuation du circuit et des poches dialysat doit etre conforme aux recommandations du centre.",
+          "texteEN": "Turn off the cycler by pressing the ON / OFF button on the back.\n\nDisposal of the circuit and dialysate bags must follow the center's recommendations.",
+          "photo": "",
+          "photoMissingFR": "Photo a ajouter : bouton ON/OFF a l'arriere du cycler",
+          "photoMissingEN": "Photo to add: ON/OFF button on back of cycler"
+        },
+        {
+          "id": "d07",
+          "titreFR": "Demonter le circuit",
+          "titreEN": "Remove the circuit",
+          "texteFR": "Ouvrir la porte du cycler. Retirer la cassette et l'ensemble du circuit (lignes, pieuvre, poches vides, rein).\n\nElimination des dechets selon les recommandations du centre (poubelle DASRI).",
+          "texteEN": "Open the cycler door. Remove the cassette and the entire circuit (lines, octopus, empty bags, kidney).\n\nDispose of waste according to the center's recommendations (clinical waste).",
+          "photo": "",
+          "photoMissingFR": "Photo a ajouter : circuit complet retire du cycler",
+          "photoMissingEN": "Photo to add: complete circuit removed from cycler"
+        },
+        {
+          "id": "d08",
+          "titreFR": "Entretien : fermer et debrancher",
+          "titreEN": "Maintenance: close and unplug",
+          "texteFR": "- Fermer la porte du cycler.\n- Debrancher la prise electrique du secteur.",
+          "texteEN": "- Close the cycler door.\n- Unplug the power cord from the wall.",
+          "photo": "",
+          "photoMissingFR": "Photo a ajouter : cycler porte fermee, prise debranchee",
+          "photoMissingEN": "Photo to add: cycler with door closed, plug removed"
+        },
+        {
+          "id": "d09",
+          "titreFR": "Nettoyer le cycler",
+          "titreEN": "Clean the cycler",
+          "texteFR": "Nettoyer la surface du cycler et de ses accessoires (rechauffeur, capteur PA, support) avec un produit adapte.\n\n1 fois par mois : nettoyer la cellule du detecteur de fuite de sang.",
+          "texteEN": "Clean the surface of the cycler and accessories (heater, AP sensor, stand) with a suitable product.\n\nOnce a month: clean the blood leak detector cell.",
+          "photo": "",
+          "photoMissingFR": "Photo a ajouter : nettoyage du cycler / cellule detecteur",
+          "photoMissingEN": "Photo to add: cycler cleaning / detector cell"
+        }
+      ]
+    }
+  }
+}

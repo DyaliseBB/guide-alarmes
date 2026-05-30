@@ -1,21 +1,27 @@
 // ============================================================
-// Guide Alarmes NxStage - PWA
+// Guide NxStage - PWA (Alarmes + Montage/Demontage)
 // Stockage : localStorage (chaque appareil garde ses propres modifs)
 // ============================================================
 
 'use strict';
 
 const STORAGE_KEY = 'guideAlarmes.data.v1';
+const PROC_STORAGE_KEY = 'guideAlarmes.procedures.v1';
+const PIN_KEY = 'guideAlarmes.pin';
 const LANG_KEY = 'guideAlarmes.langue';
 
 const state = {
   data: null,
+  procedures: null,
   langue: localStorage.getItem(LANG_KEY) || 'FR',
   filtreType: 'Tous',
   filtreAppareil: 'Tous',
   recherche: '',
   alarmeActuelle: null,
-  estNouvelle: false
+  estNouvelle: false,
+  procActuelleId: null,
+  etapeIdx: 0,
+  modeEdition: false
 };
 
 // ============================================================ INIT
@@ -24,24 +30,25 @@ window.addEventListener('DOMContentLoaded', init);
 async function init() {
   brancherEvenements();
   await chargerDonnees();
+  await chargerProcedures();
   appliquerLangue();
   rendreChipsAppareils();
   rendreListe();
+  rafraichirStatutEdition();
   enregistrerServiceWorker();
 }
 
 async function chargerDonnees() {
-  // priorité : localStorage (avec modifs utilisateur)
   const sauvegarde = localStorage.getItem(STORAGE_KEY);
   if (sauvegarde) {
     try { state.data = JSON.parse(sauvegarde); return; }
-    catch (e) { console.warn('localStorage corrompu, rechargement bundle', e); }
+    catch (e) { console.warn('localStorage alarmes corrompu', e); }
   }
-  await chargerBundle();
-  sauvegarder();
+  await chargerBundleAlarmes();
+  sauvegarderAlarmes();
 }
 
-async function chargerBundle() {
+async function chargerBundleAlarmes() {
   try {
     const r = await fetch('alarmes.json', { cache: 'no-cache' });
     state.data = await r.json();
@@ -51,8 +58,32 @@ async function chargerBundle() {
   }
 }
 
-function sauvegarder() {
+async function chargerProcedures() {
+  const sauvegarde = localStorage.getItem(PROC_STORAGE_KEY);
+  if (sauvegarde) {
+    try { state.procedures = JSON.parse(sauvegarde); return; }
+    catch (e) { console.warn('localStorage procedures corrompu', e); }
+  }
+  await chargerBundleProcedures();
+  sauvegarderProcedures();
+}
+
+async function chargerBundleProcedures() {
+  try {
+    const r = await fetch('procedures.json', { cache: 'no-cache' });
+    state.procedures = await r.json();
+  } catch (e) {
+    console.error('Impossible de charger procedures.json', e);
+    state.procedures = { procedures: { montage: { etapes: [] }, demontage: { etapes: [] } } };
+  }
+}
+
+function sauvegarderAlarmes() {
   if (state.data) localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+}
+
+function sauvegarderProcedures() {
+  if (state.procedures) localStorage.setItem(PROC_STORAGE_KEY, JSON.stringify(state.procedures));
 }
 
 function enregistrerServiceWorker() {
@@ -72,15 +103,142 @@ function appliquerLangue() {
   document.querySelectorAll('[data-i18n-ph-fr]').forEach(el => {
     el.placeholder = T(el.dataset.i18nPhFr, el.dataset.i18nPhEn);
   });
-  document.getElementById('btnLangue').textContent = state.langue === 'FR' ? 'EN' : 'FR';
+  const txtBouton = state.langue === 'FR' ? 'EN' : 'FR';
+  document.getElementById('btnLangue').textContent = txtBouton;
+  document.getElementById('btnLangueAccueil').textContent = txtBouton;
   localStorage.setItem(LANG_KEY, state.langue);
 }
 
-// ============================================================ FILTRES + LISTE
+// ============================================================ VUES + STATUT EDITION
+function changerVue(id) {
+  document.querySelectorAll('.vue').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function rafraichirStatutEdition() {
+  const el = document.getElementById('accueilEditionStatus');
+  if (state.modeEdition) {
+    el.textContent = T('🔓 Mode edition actif', '🔓 Edit mode on');
+    el.classList.add('actif');
+  } else {
+    el.textContent = T('🔒 Lecture seule', '🔒 Read only');
+    el.classList.remove('actif');
+  }
+  document.getElementById('btnNouvelle').style.display = state.modeEdition ? '' : 'none';
+  document.getElementById('btnModifierDetail').style.display = state.modeEdition ? '' : 'none';
+  document.getElementById('btnEditerProc').hidden = !state.modeEdition;
+  document.getElementById('btnEditerEtape').hidden = !state.modeEdition;
+}
+
+// ============================================================ PIN
+function pinDefini() {
+  return !!localStorage.getItem(PIN_KEY);
+}
+
+async function hash(txt) {
+  const buf = new TextEncoder().encode(txt);
+  const h = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function definirPin() {
+  const p1 = await saisirPin(
+    T('Definir votre PIN d\'edition', 'Set your edit PIN'),
+    T('Choisissez un code a 4 chiffres. Il vous sera demande pour modifier les alarmes ou les procedures.', 'Choose a 4-digit code. It will be required to edit alarms or procedures.')
+  );
+  if (p1 === null) return false;
+  if (!/^\d{4}$/.test(p1)) {
+    alert(T('Le PIN doit etre 4 chiffres.', 'PIN must be 4 digits.'));
+    return false;
+  }
+  const p2 = await saisirPin(
+    T('Confirmer le PIN', 'Confirm PIN'),
+    T('Retapez le meme code pour confirmer.', 'Retype the same code to confirm.')
+  );
+  if (p2 === null) return false;
+  if (p1 !== p2) {
+    alert(T('Les deux saisies ne correspondent pas.', 'The two entries do not match.'));
+    return false;
+  }
+  localStorage.setItem(PIN_KEY, await hash(p1));
+  return true;
+}
+
+async function verifierPin() {
+  const p = await saisirPin(
+    T('Code PIN', 'PIN code'),
+    T('Saisir votre PIN a 4 chiffres pour acceder au mode edition.', 'Enter your 4-digit PIN to enable edit mode.')
+  );
+  if (p === null) return false;
+  const h = await hash(p);
+  if (h !== localStorage.getItem(PIN_KEY)) {
+    alert(T('PIN incorrect.', 'Wrong PIN.'));
+    return false;
+  }
+  return true;
+}
+
+async function basculerModeEdition() {
+  if (state.modeEdition) {
+    state.modeEdition = false;
+    rafraichirStatutEdition();
+    return;
+  }
+  if (!pinDefini()) {
+    const ok = await definirPin();
+    if (!ok) return;
+  } else {
+    const ok = await verifierPin();
+    if (!ok) return;
+  }
+  state.modeEdition = true;
+  rafraichirStatutEdition();
+}
+
+async function changerPin() {
+  if (pinDefini()) {
+    const ok = await verifierPin();
+    if (!ok) return;
+  }
+  localStorage.removeItem(PIN_KEY);
+  await definirPin();
+}
+
+function saisirPin(titre, sous) {
+  return new Promise(resolve => {
+    const modal = document.getElementById('modalPin');
+    document.getElementById('modalPinTitre').textContent = titre;
+    document.getElementById('modalPinSous').textContent = sous || '';
+    const inp = document.getElementById('modalPinSaisie');
+    inp.value = '';
+    document.getElementById('modalPinErreur').hidden = true;
+    modal.hidden = false;
+    setTimeout(() => inp.focus(), 50);
+
+    const ok = document.getElementById('modalPinOK');
+    const cancel = document.getElementById('modalPinAnnuler');
+    const onSubmit = () => finir(inp.value);
+    const onCancel = () => finir(null);
+    const onKey = e => { if (e.key === 'Enter') onSubmit(); };
+
+    function finir(val) {
+      modal.hidden = true;
+      ok.removeEventListener('click', onSubmit);
+      cancel.removeEventListener('click', onCancel);
+      inp.removeEventListener('keydown', onKey);
+      resolve(val);
+    }
+    ok.addEventListener('click', onSubmit);
+    cancel.addEventListener('click', onCancel);
+    inp.addEventListener('keydown', onKey);
+  });
+}
+
+// ============================================================ FILTRES + LISTE ALARMES
 function rendreChipsAppareils() {
   const cont = document.getElementById('chipsAppareil');
   const appareils = state.data?.metadata?.appareils || [];
-  // Garder le bouton "Tous" déjà présent dans HTML, ajouter les autres
   for (const a of appareils) {
     const b = document.createElement('button');
     b.className = 'chip';
@@ -169,7 +327,7 @@ function carteAlarme(a) {
   if (aDuDetail(a)) {
     const m = document.createElement('span');
     m.className = 'detail-marker';
-    m.textContent = T('Détails', 'Details');
+    m.textContent = T('Detail', 'Details');
     titre.appendChild(document.createTextNode(' '));
     titre.appendChild(m);
   }
@@ -194,7 +352,7 @@ function aDuDetail(a) {
          (a.procedureEN && a.procedureEN.length > 0);
 }
 
-// ============================================================ DETAIL
+// ============================================================ DETAIL ALARME
 function ouvrirDetail(a) {
   state.alarmeActuelle = a;
   document.getElementById('detailTitre').textContent = (a.numero || '') + ' · ' + T(a.titreFR || a.titreEN, a.titreEN || a.titreFR);
@@ -207,7 +365,6 @@ function construireDetail(a) {
   const frag = document.createDocumentFragment();
   const couleur = couleurType(a.type);
 
-  // Entete colorée
   const ent = document.createElement('div');
   ent.className = 'detail-entete';
   ent.style.background = couleur.bg;
@@ -231,11 +388,10 @@ function construireDetail(a) {
   ent.appendChild(meta);
   frag.appendChild(ent);
 
-  // Action
   const sectAct = document.createElement('div');
   sectAct.className = 'detail-section action';
   const hAct = document.createElement('h3');
-  hAct.textContent = T('Action recommandée', 'Recommended action');
+  hAct.textContent = T('Action recommandee', 'Recommended action');
   sectAct.appendChild(hAct);
   const at = document.createElement('div');
   at.className = 'action-text';
@@ -243,7 +399,6 @@ function construireDetail(a) {
   sectAct.appendChild(at);
   frag.appendChild(sectAct);
 
-  // Causes
   if (a.causes && a.causes.length > 0) {
     const s = document.createElement('div');
     s.className = 'detail-section cause-action';
@@ -266,13 +421,12 @@ function construireDetail(a) {
     frag.appendChild(s);
   }
 
-  // Procédure
   const proc = state.langue === 'EN' ? a.procedureEN : a.procedureFR;
   if (proc && proc.length > 0) {
     const s = document.createElement('div');
     s.className = 'detail-section procedure';
     const ttl = document.createElement('h3');
-    ttl.textContent = T('Procédure pas-à-pas', 'Step-by-step procedure');
+    ttl.textContent = T('Procedure pas-a-pas', 'Step-by-step procedure');
     s.appendChild(ttl);
     const ol = document.createElement('ol');
     ol.className = 'procedure-list';
@@ -285,11 +439,10 @@ function construireDetail(a) {
     frag.appendChild(s);
   }
 
-  // Rappel
   const rap = document.createElement('div');
   rap.className = 'detail-rappel';
   rap.textContent = T(
-    'Rappel : ce guide ne remplace pas le User Guide officiel ni la formation NxSTEPS. En cas de doute, appeler immédiatement le support technique Fresenius Medical Care France.',
+    'Rappel : ce guide ne remplace pas le User Guide officiel ni la formation NxSTEPS. En cas de doute, appeler immediatement le support technique Fresenius Medical Care France.',
     'Reminder: this guide does not replace the official User Guide or NxSTEPS training. If in doubt, immediately call Fresenius Medical Care technical support.'
   );
   frag.appendChild(rap);
@@ -305,7 +458,7 @@ function couleurType(t) {
   return { bg, fg };
 }
 
-// ============================================================ EDIT
+// ============================================================ EDIT ALARME
 function ouvrirEdit(a, estNouvelle) {
   state.alarmeActuelle = a;
   state.estNouvelle = estNouvelle;
@@ -350,8 +503,8 @@ function carteEditCause(cause, idx) {
 
   const grille = document.createElement('div');
   grille.className = 'cause-grille';
-  grille.appendChild(champCauseLabel('À vérifier (FR)', 'Check for (FR)', cause.checkForFR || '', 'cFR'));
-  grille.appendChild(champCauseLabel('À vérifier (EN)', 'Check for (EN)', cause.checkForEN || '', 'cEN'));
+  grille.appendChild(champCauseLabel('A verifier (FR)', 'Check for (FR)', cause.checkForFR || '', 'cFR'));
+  grille.appendChild(champCauseLabel('A verifier (EN)', 'Check for (EN)', cause.checkForEN || '', 'cEN'));
   grille.appendChild(champCauseLabel('Action (FR)', 'Action (FR)', cause.doFR || '', 'dFR'));
   grille.appendChild(champCauseLabel('Action (EN)', 'Action (EN)', cause.doEN || '', 'dEN'));
   d.appendChild(grille);
@@ -405,7 +558,7 @@ function itemEtape(parentId, texte, idx, total) {
   btnEdit.className = 'btn-edit';
   btnEdit.title = T('Modifier', 'Edit');
   btnEdit.addEventListener('click', async () => {
-    const nv = await saisirTexte(T('Modifier l\'étape', 'Edit step'), texte);
+    const nv = await saisirTexte(T('Modifier l\'etape', 'Edit step'), texte);
     if (nv !== null) {
       const etapes = collecterEtapes(parentId);
       etapes[idx] = nv;
@@ -458,7 +611,7 @@ function collecterCauses() {
 
 function enregistrerEdit() {
   const num = document.getElementById('editNumero').value.trim();
-  if (!num) { alert(T('Le numéro est obligatoire.', 'Number is required.')); return; }
+  if (!num) { alert(T('Le numero est obligatoire.', 'Number is required.')); return; }
   const tFR = document.getElementById('editTitreFR').value.trim();
   const tEN = document.getElementById('editTitreEN').value.trim();
   if (!tFR && !tEN) { alert(T('Au moins un titre est obligatoire.', 'At least one title is required.')); return; }
@@ -489,7 +642,7 @@ function enregistrerEdit() {
     const idx = state.data.alarmes.indexOf(state.alarmeActuelle);
     if (idx >= 0) state.data.alarmes[idx] = nouvelle;
   }
-  sauvegarder();
+  sauvegarderAlarmes();
   rendreListe();
   changerVue('vueListe');
 }
@@ -497,24 +650,260 @@ function enregistrerEdit() {
 function supprimerAlarmeActuelle() {
   if (!state.alarmeActuelle || state.estNouvelle) { changerVue('vueListe'); return; }
   const msg = T(
-    'Supprimer l\'alarme ' + state.alarmeActuelle.numero + ' ?\n\nUtilisez "Réinitialiser données Fresenius" dans le menu pour restaurer.',
+    'Supprimer l\'alarme ' + state.alarmeActuelle.numero + ' ?\n\nUtilisez "Reinitialiser donnees Fresenius" dans le menu pour restaurer.',
     'Delete alarm ' + state.alarmeActuelle.numero + '?\n\nUse "Reset to Fresenius data" in the menu to restore.'
   );
   if (!confirm(msg)) return;
   const idx = state.data.alarmes.indexOf(state.alarmeActuelle);
   if (idx >= 0) state.data.alarmes.splice(idx, 1);
-  sauvegarder();
+  sauvegarderAlarmes();
   rendreListe();
   changerVue('vueListe');
 }
 
-// ============================================================ VUES + MODAL TEXTE
-function changerVue(id) {
-  document.querySelectorAll('.vue').forEach(v => v.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
+// ============================================================ PROCEDURES : INTRO
+function ouvrirProcedure(procId) {
+  state.procActuelleId = procId;
+  state.etapeIdx = 0;
+  const proc = state.procedures.procedures[procId];
+  if (!proc) { changerVue('vueAccueil'); return; }
+
+  const entete = document.getElementById('procIntroEntete');
+  entete.style.background = proc.couleur || '#1976d2';
+  document.getElementById('procIntroTitre').textContent = T(proc.titreFR, proc.titreEN);
+
+  const cont = document.getElementById('procIntroContenu');
+  cont.innerHTML = '';
+
+  const sousTitre = document.createElement('div');
+  sousTitre.className = 'proc-intro-sous';
+  sousTitre.textContent = T(proc.sousTitreFR || '', proc.sousTitreEN || '');
+  cont.appendChild(sousTitre);
+
+  if (proc.introFR || proc.introEN) {
+    const intro = document.createElement('div');
+    intro.className = 'proc-intro-bloc';
+    intro.textContent = T(proc.introFR || '', proc.introEN || '');
+    cont.appendChild(intro);
+  }
+
+  const total = (proc.etapes || []).length;
+  const infos = document.createElement('div');
+  infos.className = 'proc-intro-infos';
+  infos.textContent = T(`${total} etape(s)`, `${total} step(s)`);
+  cont.appendChild(infos);
+
+  const btn = document.createElement('button');
+  btn.className = 'btn-grand-action';
+  btn.style.background = proc.couleur || '#1976d2';
+  btn.textContent = T('Commencer la procedure', 'Start the procedure');
+  btn.addEventListener('click', () => ouvrirEtape(0));
+  cont.appendChild(btn);
+
+  const apercu = document.createElement('div');
+  apercu.className = 'proc-apercu';
+  const ttl = document.createElement('h3');
+  ttl.textContent = T('Apercu des etapes', 'Steps overview');
+  apercu.appendChild(ttl);
+  (proc.etapes || []).forEach((e, i) => {
+    const li = document.createElement('div');
+    li.className = 'proc-apercu-item';
+    li.addEventListener('click', () => ouvrirEtape(i));
+    const num = document.createElement('span');
+    num.className = 'proc-apercu-num';
+    num.textContent = i + 1;
+    li.appendChild(num);
+    const tx = document.createElement('span');
+    tx.className = 'proc-apercu-texte';
+    tx.textContent = T(e.titreFR, e.titreEN);
+    li.appendChild(tx);
+    apercu.appendChild(li);
+  });
+  cont.appendChild(apercu);
+
+  changerVue('vueProcIntro');
 }
 
+// ============================================================ PROCEDURES : ETAPE
+function ouvrirEtape(idx) {
+  const proc = state.procedures.procedures[state.procActuelleId];
+  if (!proc) return;
+  const etapes = proc.etapes || [];
+  if (etapes.length === 0) { changerVue('vueProcIntro'); return; }
+  if (idx < 0) idx = 0;
+  if (idx >= etapes.length) {
+    finProcedure();
+    return;
+  }
+  state.etapeIdx = idx;
+  const etape = etapes[idx];
+
+  const entete = document.getElementById('etapeEntete');
+  entete.style.background = proc.couleur || '#1976d2';
+  document.getElementById('etapeProgres').textContent =
+    T(`Etape ${idx + 1} / ${etapes.length}`, `Step ${idx + 1} / ${etapes.length}`);
+
+  const cont = document.getElementById('etapeContenu');
+  cont.innerHTML = '';
+
+  const progress = document.createElement('div');
+  progress.className = 'etape-progress';
+  const bar = document.createElement('div');
+  bar.className = 'etape-progress-bar';
+  bar.style.width = ((idx + 1) / etapes.length * 100) + '%';
+  bar.style.background = proc.couleur || '#1976d2';
+  progress.appendChild(bar);
+  cont.appendChild(progress);
+
+  const titre = document.createElement('h2');
+  titre.className = 'etape-titre';
+  titre.textContent = T(etape.titreFR, etape.titreEN);
+  cont.appendChild(titre);
+
+  const suffixes = ['', '2', '3', '4', '5'];
+  let aucunePhoto = true;
+  suffixes.forEach(s => {
+    const src = etape['photo' + s];
+    if (!src) return;
+    aucunePhoto = false;
+    const fig = document.createElement('figure');
+    fig.className = 'etape-photo';
+    const img = document.createElement('img');
+    img.src = src;
+    const altFR = etape['photoAlt' + s + 'FR'] || '';
+    const altEN = etape['photoAlt' + s + 'EN'] || '';
+    img.alt = T(altFR, altEN);
+    if (s === '') {
+      img.onerror = () => { fig.classList.add('photo-erreur'); fig.innerHTML = '<div class="photo-placeholder">📷 ' + T('Photo introuvable', 'Photo not found') + '</div>'; };
+    } else {
+      img.onerror = () => fig.remove();
+    }
+    fig.appendChild(img);
+    if (altFR || altEN) {
+      const cap = document.createElement('figcaption');
+      cap.textContent = T(altFR, altEN);
+      fig.appendChild(cap);
+    }
+    cont.appendChild(fig);
+  });
+  if (aucunePhoto && (etape.photoMissingFR || etape.photoMissingEN)) {
+    const ph = document.createElement('div');
+    ph.className = 'photo-placeholder';
+    ph.textContent = '📷 ' + T(etape.photoMissingFR || '', etape.photoMissingEN || '');
+    cont.appendChild(ph);
+  }
+
+  const texte = document.createElement('div');
+  texte.className = 'etape-texte-detail';
+  const txt = T(etape.texteFR || '', etape.texteEN || '');
+  // Render line breaks and bullet "- " prefixes
+  txt.split('\n').forEach(ligne => {
+    if (ligne.trim() === '') {
+      texte.appendChild(document.createElement('br'));
+      return;
+    }
+    const p = document.createElement('p');
+    if (ligne.trim().startsWith('- ')) {
+      p.className = 'etape-puce';
+      p.textContent = ligne.trim().substring(2);
+    } else {
+      p.textContent = ligne;
+    }
+    texte.appendChild(p);
+  });
+  cont.appendChild(texte);
+
+  // Boutons
+  const btnPrec = document.getElementById('btnEtapePrec');
+  const btnVal = document.getElementById('btnEtapeValider');
+  btnPrec.disabled = idx === 0;
+  if (idx === etapes.length - 1) {
+    btnVal.querySelector('span:first-child').textContent = T('Terminer', 'Finish');
+  } else {
+    btnVal.querySelector('span:first-child').textContent = T('Valider', 'Validate');
+  }
+  btnVal.style.background = proc.couleur || '#1976d2';
+
+  changerVue('vueEtape');
+}
+
+function finProcedure() {
+  const proc = state.procedures.procedures[state.procActuelleId];
+  alert(T(
+    'Procedure "' + (proc?.titreFR || '') + '" terminee.',
+    'Procedure "' + (proc?.titreEN || '') + '" completed.'
+  ));
+  changerVue('vueAccueil');
+}
+
+// ============================================================ EDITION ETAPE
+let etapeEditPhotoData = '';
+
+function ouvrirEditionEtape() {
+  const proc = state.procedures.procedures[state.procActuelleId];
+  if (!proc) return;
+  const etape = proc.etapes[state.etapeIdx];
+  if (!etape) return;
+
+  document.getElementById('etapeEditTitreFR').value = etape.titreFR || '';
+  document.getElementById('etapeEditTitreEN').value = etape.titreEN || '';
+  document.getElementById('etapeEditTexteFR').value = etape.texteFR || '';
+  document.getElementById('etapeEditTexteEN').value = etape.texteEN || '';
+  etapeEditPhotoData = etape.photo || '';
+  rendreApercuPhoto();
+  changerVue('vueEtapeEdit');
+}
+
+function rendreApercuPhoto() {
+  const cont = document.getElementById('etapeEditPhotoPreview');
+  cont.innerHTML = '';
+  if (etapeEditPhotoData) {
+    const img = document.createElement('img');
+    img.src = etapeEditPhotoData;
+    img.alt = '';
+    img.onerror = () => { cont.textContent = T('Photo introuvable : ', 'Photo not found: ') + etapeEditPhotoData; };
+    cont.appendChild(img);
+    const note = document.createElement('div');
+    note.className = 'photo-source';
+    note.textContent = etapeEditPhotoData.startsWith('data:') ? T('Photo personnalisee (stockee localement)', 'Custom photo (stored locally)') : etapeEditPhotoData;
+    cont.appendChild(note);
+  } else {
+    cont.textContent = T('Aucune photo selectionnee', 'No photo selected');
+  }
+}
+
+function enregistrerEditionEtape() {
+  const proc = state.procedures.procedures[state.procActuelleId];
+  if (!proc) return;
+  const etape = proc.etapes[state.etapeIdx];
+  if (!etape) return;
+  etape.titreFR = document.getElementById('etapeEditTitreFR').value.trim();
+  etape.titreEN = document.getElementById('etapeEditTitreEN').value.trim();
+  etape.texteFR = document.getElementById('etapeEditTexteFR').value;
+  etape.texteEN = document.getElementById('etapeEditTexteEN').value;
+  etape.photo = etapeEditPhotoData;
+  if (etape.photo) {
+    delete etape.photoMissingFR;
+    delete etape.photoMissingEN;
+  }
+  sauvegarderProcedures();
+  ouvrirEtape(state.etapeIdx);
+}
+
+function supprimerEtapeActuelle() {
+  const proc = state.procedures.procedures[state.procActuelleId];
+  if (!proc) return;
+  if (!confirm(T('Supprimer cette etape ?', 'Delete this step?'))) return;
+  proc.etapes.splice(state.etapeIdx, 1);
+  sauvegarderProcedures();
+  if (proc.etapes.length === 0) {
+    ouvrirProcedure(state.procActuelleId);
+  } else {
+    ouvrirEtape(Math.min(state.etapeIdx, proc.etapes.length - 1));
+  }
+}
+
+// ============================================================ MODAL TEXTE
 function saisirTexte(titre, valeur) {
   return new Promise(resolve => {
     const modal = document.getElementById('modalTexte');
@@ -541,20 +930,23 @@ function saisirTexte(titre, valeur) {
 
 // ============================================================ EVENEMENTS GLOBAUX
 function brancherEvenements() {
-  document.getElementById('btnLangue').addEventListener('click', () => {
-    state.langue = state.langue === 'FR' ? 'EN' : 'FR';
-    appliquerLangue();
-    rendreListe();
-    if (state.alarmeActuelle && document.getElementById('vueDetail').classList.contains('active')) {
-      ouvrirDetail(state.alarmeActuelle);
-    }
+  // ACCUEIL
+  document.getElementById('btnAccueilAlarmes').addEventListener('click', () => changerVue('vueListe'));
+  document.getElementById('btnAccueilMontage').addEventListener('click', () => ouvrirProcedure('montage'));
+  document.getElementById('btnAccueilDemontage').addEventListener('click', () => ouvrirProcedure('demontage'));
+  document.getElementById('btnLangueAccueil').addEventListener('click', basculerLangue);
+  document.getElementById('btnAccueilMenu').addEventListener('click', () => {
+    document.getElementById('menu').hidden = false;
   });
+  document.getElementById('accueilEditionStatus').addEventListener('click', basculerModeEdition);
 
+  // LISTE ALARMES
+  document.getElementById('btnRetourListe').addEventListener('click', () => changerVue('vueAccueil'));
+  document.getElementById('btnLangue').addEventListener('click', basculerLangue);
   document.getElementById('recherche').addEventListener('input', e => {
     state.recherche = e.target.value;
     rendreListe();
   });
-
   document.querySelectorAll('#chipsType .chip').forEach(b => {
     b.addEventListener('click', () => {
       state.filtreType = b.dataset.type;
@@ -564,11 +956,17 @@ function brancherEvenements() {
     });
   });
 
+  // DETAIL ALARME
   document.getElementById('btnRetourDetail').addEventListener('click', () => changerVue('vueListe'));
-  document.getElementById('btnModifierDetail').addEventListener('click', () => {
+  document.getElementById('btnModifierDetail').addEventListener('click', async () => {
+    if (!state.modeEdition) {
+      alert(T('Activez d\'abord le mode edition (Reglages).', 'Enable edit mode first (Settings).'));
+      return;
+    }
     if (state.alarmeActuelle) ouvrirEdit(state.alarmeActuelle, false);
   });
 
+  // EDIT ALARME
   document.getElementById('btnAnnulerEdit').addEventListener('click', () => {
     if (state.estNouvelle) changerVue('vueListe');
     else ouvrirDetail(state.alarmeActuelle);
@@ -577,13 +975,13 @@ function brancherEvenements() {
   document.getElementById('btnSupprimerEdit').addEventListener('click', supprimerAlarmeActuelle);
 
   document.getElementById('btnAjouterCause').addEventListener('click', () => {
-    const causes = collecterCausesActuelles();
+    const causes = collecterCauses();
     causes.push({ checkForFR: '', checkForEN: '', doFR: '', doEN: '' });
     rendreCauses(causes);
   });
 
   document.getElementById('btnAjouterProcFR').addEventListener('click', async () => {
-    const nv = await saisirTexte(T('Nouvelle étape (FR)', 'New step (FR)'), '');
+    const nv = await saisirTexte(T('Nouvelle etape (FR)', 'New step (FR)'), '');
     if (nv) {
       const etapes = collecterEtapes('editProcFR');
       etapes.push(nv);
@@ -600,36 +998,115 @@ function brancherEvenements() {
   });
 
   document.getElementById('btnNouvelle').addEventListener('click', () => {
+    if (!state.modeEdition) { alert(T('Mode edition desactive.', 'Edit mode disabled.')); return; }
     ouvrirEdit({ type: 'Caution', appareil: 'Cycler' }, true);
   });
 
+  // PROCEDURES - INTRO
+  document.getElementById('btnRetourProcIntro').addEventListener('click', () => changerVue('vueAccueil'));
+  document.getElementById('btnEditerProc').addEventListener('click', () => {
+    alert(T(
+      'Pour modifier les etapes, ouvrez une etape puis appuyez sur "Editer".',
+      'To edit steps, open a step and press "Edit".'
+    ));
+  });
+
+  // PROCEDURES - ETAPE
+  document.getElementById('btnRetourEtape').addEventListener('click', () => ouvrirProcedure(state.procActuelleId));
+  document.getElementById('btnEtapePrec').addEventListener('click', () => {
+    if (state.etapeIdx > 0) ouvrirEtape(state.etapeIdx - 1);
+  });
+  document.getElementById('btnEtapeValider').addEventListener('click', () => {
+    ouvrirEtape(state.etapeIdx + 1);
+  });
+  document.getElementById('btnEditerEtape').addEventListener('click', () => {
+    if (!state.modeEdition) {
+      alert(T('Activez d\'abord le mode edition (Reglages).', 'Enable edit mode first (Settings).'));
+      return;
+    }
+    ouvrirEditionEtape();
+  });
+
+  // EDIT ETAPE
+  document.getElementById('btnAnnulerEtapeEdit').addEventListener('click', () => ouvrirEtape(state.etapeIdx));
+  document.getElementById('btnEnregistrerEtapeEdit').addEventListener('click', enregistrerEditionEtape);
+  document.getElementById('btnSupprimerEtape').addEventListener('click', supprimerEtapeActuelle);
+  document.getElementById('etapeEditPhotoFile').addEventListener('change', e => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (f.size > 2_000_000) {
+      if (!confirm(T(
+        'Cette photo fait plus de 2 Mo. Elle sera stockee en base64 dans le navigateur, ce qui peut saturer le stockage. Continuer ?',
+        'This photo is larger than 2 MB. It will be stored as base64 in the browser, which may fill up storage. Continue?'
+      ))) { e.target.value = ''; return; }
+    }
+    const r = new FileReader();
+    r.onload = ev => {
+      etapeEditPhotoData = ev.target.result;
+      rendreApercuPhoto();
+    };
+    r.readAsDataURL(f);
+    e.target.value = '';
+  });
+  document.getElementById('btnEtapeRetirerPhoto').addEventListener('click', () => {
+    etapeEditPhotoData = '';
+    rendreApercuPhoto();
+  });
+
+  // MENU
   document.getElementById('btnMenu').addEventListener('click', () => {
     document.getElementById('menu').hidden = false;
   });
   document.getElementById('menuFermer').addEventListener('click', () => {
     document.getElementById('menu').hidden = true;
   });
+  document.getElementById('menuVerrouillage').addEventListener('click', async () => {
+    document.getElementById('menu').hidden = true;
+    await basculerModeEdition();
+  });
+  document.getElementById('menuChangerPin').addEventListener('click', async () => {
+    document.getElementById('menu').hidden = true;
+    await changerPin();
+  });
   document.getElementById('menuReset').addEventListener('click', async () => {
+    document.getElementById('menu').hidden = true;
+    if (!state.modeEdition) { alert(T('Mode edition desactive.', 'Edit mode disabled.')); return; }
     if (!confirm(T(
-      'Toutes vos modifications seront perdues. Restaurer les données Fresenius ?',
-      'All your edits will be lost. Restore Fresenius data?'
+      'Toutes vos modifications d\'alarmes seront perdues. Restaurer les donnees Fresenius ?',
+      'All your alarm edits will be lost. Restore Fresenius data?'
     ))) return;
     localStorage.removeItem(STORAGE_KEY);
-    await chargerBundle();
-    sauvegarder();
+    await chargerBundleAlarmes();
+    sauvegarderAlarmes();
     rendreListe();
+    alert(T('Donnees alarmes restaurees.', 'Alarm data restored.'));
+  });
+  document.getElementById('menuResetProc').addEventListener('click', async () => {
     document.getElementById('menu').hidden = true;
-    alert(T('Données restaurées.', 'Data restored.'));
+    if (!state.modeEdition) { alert(T('Mode edition desactive.', 'Edit mode disabled.')); return; }
+    if (!confirm(T(
+      'Toutes vos modifications de procedures seront perdues. Restaurer les procedures d\'origine ?',
+      'All your procedure edits will be lost. Restore original procedures?'
+    ))) return;
+    localStorage.removeItem(PROC_STORAGE_KEY);
+    await chargerBundleProcedures();
+    sauvegarderProcedures();
+    alert(T('Procedures restaurees.', 'Procedures restored.'));
   });
   document.getElementById('menuExport').addEventListener('click', () => {
-    const blob = new Blob([JSON.stringify(state.data, null, 2)], { type: 'application/json' });
+    document.getElementById('menu').hidden = true;
+    const bundle = {
+      alarmes: state.data,
+      procedures: state.procedures,
+      exportedAt: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'alarmes-export.json';
+    a.download = 'nxstage-export.json';
     a.click();
     URL.revokeObjectURL(url);
-    document.getElementById('menu').hidden = true;
   });
   document.getElementById('menuImport').addEventListener('click', () => {
     document.getElementById('fileImport').click();
@@ -637,16 +1114,28 @@ function brancherEvenements() {
   document.getElementById('fileImport').addEventListener('change', e => {
     const f = e.target.files?.[0];
     if (!f) return;
+    if (!state.modeEdition) { alert(T('Activez le mode edition pour importer.', 'Enable edit mode to import.')); e.target.value = ''; return; }
     const r = new FileReader();
     r.onload = ev => {
       try {
         const d = JSON.parse(ev.target.result);
-        if (!d.alarmes || !Array.isArray(d.alarmes)) throw new Error('Format invalide');
-        state.data = d;
-        sauvegarder();
+        // Format 1 : nouveau bundle (alarmes + procedures)
+        if (d.alarmes && d.alarmes.alarmes) {
+          state.data = d.alarmes;
+          if (d.procedures) state.procedures = d.procedures;
+          sauvegarderAlarmes();
+          sauvegarderProcedures();
+        }
+        // Format 2 : ancien (juste alarmes)
+        else if (d.alarmes && Array.isArray(d.alarmes)) {
+          state.data = d;
+          sauvegarderAlarmes();
+        } else {
+          throw new Error('Format non reconnu');
+        }
         rendreListe();
         document.getElementById('menu').hidden = true;
-        alert(T('Import réussi.', 'Import successful.'));
+        alert(T('Import reussi.', 'Import successful.'));
       } catch (err) {
         alert(T('Erreur import : ', 'Import error: ') + err.message);
       }
@@ -655,14 +1144,25 @@ function brancherEvenements() {
     e.target.value = '';
   });
   document.getElementById('menuApropos').addEventListener('click', () => {
-    alert(T(
-      'Guide Alarmes NxStage - PWA\n\nDocument de courtoisie - usage personnel.\nSources : Fresenius TM0763 et TM0848 EMEA (2020).\n\nNE REMPLACE PAS le User Guide officiel.\nEn cas de doute, appeler Fresenius Medical Care France.',
-      'NxStage Alarms Guide - PWA\n\nCourtesy document - personal use.\nSources: Fresenius TM0763 and TM0848 EMEA (2020).\n\nDOES NOT REPLACE the official User Guide.\nIf in doubt, call Fresenius Medical Care.'
-    ));
     document.getElementById('menu').hidden = true;
+    alert(T(
+      'Guide NxStage - PWA\n\nDocument de courtoisie - usage personnel.\nSources : Fresenius TM0763, TM0848 EMEA (2020), Theradial DT-FOR-125 V7.\n\nNE REMPLACE PAS le User Guide officiel ni la formation NxSTEPS.\nEn cas de doute, appeler Fresenius Medical Care France.',
+      'NxStage Guide - PWA\n\nCourtesy document - personal use.\nSources: Fresenius TM0763, TM0848 EMEA (2020), Theradial DT-FOR-125 V7.\n\nDOES NOT REPLACE the official User Guide or NxSTEPS training.\nIf in doubt, call Fresenius Medical Care.'
+    ));
   });
 }
 
-function collecterCausesActuelles() {
-  return collecterCauses();
+function basculerLangue() {
+  state.langue = state.langue === 'FR' ? 'EN' : 'FR';
+  appliquerLangue();
+  rendreListe();
+  rafraichirStatutEdition();
+  if (state.alarmeActuelle && document.getElementById('vueDetail').classList.contains('active')) {
+    ouvrirDetail(state.alarmeActuelle);
+  }
+  if (document.getElementById('vueProcIntro').classList.contains('active')) {
+    ouvrirProcedure(state.procActuelleId);
+  } else if (document.getElementById('vueEtape').classList.contains('active')) {
+    ouvrirEtape(state.etapeIdx);
+  }
 }
